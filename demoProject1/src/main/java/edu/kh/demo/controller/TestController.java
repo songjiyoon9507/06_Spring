@@ -90,5 +90,7 @@ public class TestController {
 		
 		// templates 폴더 안에 test.html 파일 만들면 됨
 		// spring boot 는 서버 껐다 켰다 안해도 됨
+		
+		// 수정
 	}
 }
