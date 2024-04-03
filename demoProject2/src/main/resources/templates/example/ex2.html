@@ -107,5 +107,7 @@ Blue
      <!-- th:src 속성 : 타임리프를 이용해서 경로 작성
         (옆에 작성된 값을 이용해서 srx 속성 추가) -->
      <img th:src="#{user.default.image}" width="200px">
+
+     <th:block th:replace="~{fragments/footer}"></th:block>
 </body>
 </html>
