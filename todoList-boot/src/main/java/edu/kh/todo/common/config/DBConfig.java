@@ -98,6 +98,7 @@ public class DBConfig {
 	
 	// Mybatis 설정
 	
+	@Bean
 	public SqlSessionFactory sessionFactory(DataSource dataSource) throws Exception {
 		// 커넥션 + CP + 마이바티스
 		SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();
