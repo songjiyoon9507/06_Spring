@@ -69,11 +69,17 @@ public class DBConfig {
 	// @ConfigurationProperties : @PropertySource와 연결해서 사용되는 애
 	// @Bean : Bean 으로 등록 Spring 이 관리
 	
+	// hikariCP 빠르고 효율 좋음
+	
 	@Bean
 	@ConfigurationProperties(prefix="spring.datasource.hikari")
 	public HikariConfig hikariConfig() {
 		
 		return new HikariConfig();
+		// spring.datasource.hikari 값들을 가지고 와서 HikariConfig 만듦
+		// spring.datasource.hikari 이거는 config.properties 에서 가져옴
+		// spring.datasource.hikari 안에는 DB 정보 Hikari 설정 정보들이 들어있음
+		// spring.datasource.hikari 로 시작하는 애들 다 가져와서 Bean 으로 만듦 HikariConfig
 	}
 	
 	// 설정 내용들 + CP HikariDataSource 만듦 DataSource interface (이미 자바단에서 만들어놓음) 에 대입
@@ -134,8 +140,8 @@ public class DBConfig {
 	}
 	
 	// SqlSessionTemplate : 기본 SQL 실행 + 트랜잭션 처리
-	/* Connection + DBCP(커넥션 생성하는 거) +Mybatis + 트랜잭션 제어 처리
-	 * 
+	/* Connection + DBCP(커넥션 생성하는 거) + Mybatis + 트랜잭션 제어 처리
+	 * Data Base Connection Pool
 	 * */
 	@Bean
 	public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sessionFactory) {
