@@ -24,6 +24,11 @@ public interface TodoMapper {
 	 * 메서드명과 id 가 같은 태그가 서로 연결됨
 	 * */
 	
+	// interface 는 객체가 될 수 없음
+	/* 마이바티스에서 제공하고있는 애가 Bean 으로 등록되는 거 TodoMapper라는 interface를 상속받은 객체가 Bean 으로 등록
+	 * TodoMapper 자체가 Bean 이 되는 게 아님
+	 * */
+	
 	/** 할 일 목록 조회
 	 * @return todoList
 	 */
@@ -40,9 +45,29 @@ public interface TodoMapper {
 	 * @return result
 	 */
 	int addTodo(Todo todo);
-	
-	// interface 는 객체가 될 수 없음
-	/* 마이바티스에서 제공하고있는 애가 Bean 으로 등록되는 거 TodoMapper라는 interface를 상속받은 객체가 Bean 으로 등록
-	 * TodoMapper 자체가 Bean 이 되는 게 아님
-	 * */
+
+	/** 할 일 상세 조회
+	 * @param todoNo
+	 * @return todo
+	 */
+	Todo todoDetail(int todoNo);
+
+	/** 완료 여부 수정
+	 * @param todo
+	 * @return result
+	 */
+	int changeComplete(Todo todo);
+
+	/** 할 일 수정
+	 * @param todo
+	 * @return result
+	 */
+	int todoUpdate(Todo todo);
+
+	/** 할 일 삭제
+	 * @param todoNo
+	 * @return result
+	 */
+	int todoDelete(int todoNo);
+
 }
