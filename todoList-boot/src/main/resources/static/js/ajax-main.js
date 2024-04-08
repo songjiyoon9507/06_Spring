@@ -289,7 +289,7 @@ changeComplete.addEventListener("click", () => {
     
     popupComplete.innerHTML = complete;
     const param = {
-        // Key        : Value
+        // Key     : Value
         "todoNo"   : todoNo,
         "complete" : complete
     };
