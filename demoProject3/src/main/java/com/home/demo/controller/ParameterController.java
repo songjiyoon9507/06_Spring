@@ -1,10 +1,17 @@
 package com.home.demo.controller;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.home.demo.model.dto.MemberDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -87,7 +94,7 @@ public class ParameterController {
 	@PostMapping("test2")
 	public String paramTest2(@RequestParam("title") String title,
 			@RequestParam("writer") String writer,
-			@RequestParam("price") int price,  // 자동으로 형변환 됨 강제 형변환 안해줘도 됨
+			@RequestParam("price") int price,  // 자동으로 형변환 됨 강제 형변환(파싱) 안해줘도 됨
 			@RequestParam(value="publisher", required=false) String publisher
 			) {
 		
@@ -103,7 +110,7 @@ public class ParameterController {
 		 * */
 		
 		/* @RequestParam("publisher") String publisher 구문 추가 html 에서는 input 받는 창 없음
-		 * => 404 bad request 에러남
+		 * => 400 bad request 에러남
 		 * 
 		 * @RequestParam
 		 * 기본 작성법대로 작성하면 요청 받을 때 parameter 값이 꼭 있어야함
@@ -124,6 +131,66 @@ public class ParameterController {
 		 * defaultValue 적었을 때 publisher : ABC출판사
 		 * */
 		
+		return "redirect:/param/main";
+	}
+	
+	/* 3. @RequestParam 여러 개 파라미터
+	 * 
+	 * String []
+	 * List<자료형>
+	 * Map<String, Object>
+	 * 
+	 * required 속성은 사용 가능하나,
+	 * defaultValue 속성은 사용 불가
+	 * */
+	
+	@PostMapping("test3")
+	public String paramTest3(@RequestParam(value="color", required=false) String[] colorArr,
+			@RequestParam(value="fruit", required=false) List<String> fruitList,
+			@RequestParam Map<String, Object> paramMap) {
+		
+		log.debug("colorArr : " + Arrays.toString(colorArr));
+		// colorArr : [Red, Green, Blue]
+		
+		log.debug("fruitList : " + fruitList);
+		// fruitList : [Apple, Banana, Orange]
+		
+		/* @RequestParam Map<String, Object>
+		 * -> 제출된 모든 파라미터가 Map 에 저장된다
+		 * -> 단, key(name 속성값)이 중복되면 처음 들어온 값 하나만 저장됨
+		 * -> 같은 name 속성 파라미터 String[], List 로 저장 X
+		 * */
+		log.debug("paramMap : " + paramMap);
+		// paramMap : {color=Red, fruit=Apple, productName=키링, expirationDate=2024-05-04}
+		// Map 은 key (name 속성값) 가 중복되면 한개만 나옴 낱개들을 가져올 때(name 값이 겹치지 않는 값) 쓰기 좋음
+		return "redirect:/param/main";
+	}
+	
+	/* 4. @ModelAttribute 를 이용한 파라미터 얻어오기
+	 * 
+	 * @ModelAttribute
+	 * - DTO(또는 VO)와 같이 사용하는 어노테이션
+	 * 
+	 * 전달 받은 파라미터의 name 속성 값이
+	 * 같이 사용되는 DTO의 필드명과 같으면
+	 * 자동으로 setter 를 호출해서 필드에 값을 세팅
+	 * 
+	 * inputMember 커맨드 객체라고 부름
+	 * 
+	 * *** @ModelAttribute를 이용해 값이 필드에 세팅된 객체를
+	 * "커맨드 객체" 라고 부름 ***
+	 * 
+	 * *** @ModelAttribute 사용 시 주의사항 ***
+	 * - DTO에 기본생성자, setter 가 필수로 존재해야 함
+	 * 
+	 * *** @ModelAttribute 어노테이션은 생략 가능 ***
+	 * */
+	
+	@PostMapping("test4")
+	public String paramTest4(@ModelAttribute MemberDTO inputMember) {
+		
+		log.debug("inputMember : " + inputMember);
+		// inputMember : MemberDTO(memberId=user01, memberPw=pass01, memberName=홍길동, memberAge=20)
 		return "redirect:/param/main";
 	}
 }

@@ -19,7 +19,8 @@ public class DemoProject3Application {
  * 
  * @ComponentScan
  * 
- * @Service 어노테이션 보면 @ComponentScan 이 Bean 으로 만들어줌
+ * @Service 어노테이션 보면 @ComponentScan 이 Bean 으로 만들어줌 + Service 객체임을 명시
+ * -> Spring Container 가 그 때부터 관리해줌
  * 
  * src/main/java 안에 templates static application.properties 자동으로 생성되어 있음
  * 
