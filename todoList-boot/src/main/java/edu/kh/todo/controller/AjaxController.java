@@ -148,9 +148,19 @@ public class AjaxController {
 		return service.todoDelete(todoNo);
 	}
 	
+	// 비동기 요청 return 에 작성하는 값이 비동기 요청 보낸 쪽으로 돌려주려면 어노테이션 추가
+	// return 에 주소값이 아닌 객체 그대로 돌려줄 때
+	// 완료 여부 변경
 	@ResponseBody
 	@PutMapping("changeComplete")
 	public int changeComplete(@RequestBody Todo todo) {
 		return service.changeComplete(todo);
+	}
+	
+	// 할 일 수정
+	@ResponseBody
+	@PutMapping("update")
+	public int todoUpdate(@RequestBody Todo todo) {
+		return service.todoUpdate(todo);
 	}
 }
