@@ -87,4 +87,17 @@ public class ExampleController {
 		return "example/ex2";
 		// 요청 받은 내용을 다시 위임했을 때 값을 그대로 사용할 수 있음
 	}
+	
+	@GetMapping("ex3")
+	public String ex3(Model model) {
+		
+		// Model : 데이터 전달용 객체 (request scope)
+		
+		model.addAttribute("boardNo", 10);
+		
+		model.addAttribute("key", "제목");
+		model.addAttribute("query", "검색어");
+		
+		return "example/ex3";
+	}
 }

@@ -21,42 +21,94 @@
       <section class="content-2">
         <!-- 로그인, 회원가입 버튼 -->
 
-          <!-- 로그인 박스 -->
-          <form action="/member/login" method="POST" id="loginForm">
-            <fieldset class="id-pw-area">
-  
-              <!-- 아이디/비밀번호 입력 -->
-              <section>
-                <input type="text" 
-                       name="memberEmail"
-                       placeholder="이메일">
-  
-                <input type="password" 
-                       name="memberPw" 
-                       placeholder="비밀번호">
-              </section>
-  
-              <!-- 로그인 버튼 -->
-              <section>
-                <button>로그인</button>
-              </section>
-            </fieldset>
-  
-            <label>
-              <!-- label 태그 : input 태그의 제목을 나타내는 태그  -->
-              <input type="checkbox" name="saveId">
-              아이디 저장
-            </label>
-  
-            <article class="signup-find-area">
+          <!-- 로그인이 되어있지 않은 경우 -->
+          <th:block th:if="${session.loginMember == null}">
+            <!-- 로그인 박스 -->
+            <form action="/member/login" method="POST" id="loginForm">
+              <fieldset class="id-pw-area">
+    
+                <!-- 아이디/비밀번호 입력 -->
+                <section>
+                  <input type="text" 
+                        name="memberEmail"
+                        placeholder="이메일">
+    
+                  <input type="password" 
+                        name="memberPw" 
+                        placeholder="비밀번호">
+                </section>
+    
+                <!-- 로그인 버튼 -->
+                <section>
+                  <button>로그인</button>
+                </section>
+              </fieldset>
+    
+              <label>
+                <!-- label 태그 : input 태그의 제목을 나타내는 태그  -->
+                <input type="checkbox" name="saveId">
+                아이디 저장
+                <!-- 쿠키 브라우저에서 저장하는 거 보안에 취약할 수 있음 만료날짜 지정 가능
+                쿠키 : 클라이언트(브라우저)에 저장되는 작은 데이터 조각 쉽게 수정하거나 삭제 가능
+                이메일 같은 거 저장해두고 아이디 저장해두고.. 등등
+                아이디 경우 30일 정도 줌 지정 안해주면 닫으면 끝 -->
 
-              <a href="/member/signup">회원가입</a>
+                <!-- 세션 (Session) : 서버측에서 사용자 상태 관리
+                  클라이언트가 서버 처음 접속할 때 서버가 클라이언트에 대한
+                  고유한 세션 id 발급하고 저장함 (서버) jsession 서버에는 클라이언트 세션 ID 다 가지고 있음
+                  클라이언트가 요청 보낼 때
+                  클라이언트가 가지고 있는 session id 가 서버로 전송이 돼서 해당 세션에 대한 저장 정보 검색 및 처리
+                  로그인 상태, 사용자 프로필, 장바구니 정보 등등 (보안상 쿠키보다 안전함 서버측에서 데이터를 관리하기 때문에)
+                  클라이언트 측에서 마음대로 수정할 수 없기 때문에
+                  세션도 만료 기간 줄 수 있음 사용자의 로그아웃 세션 만료 시까지 지속됨 -->
+              </label>
+    
+              <article class="signup-find-area">
 
-              <span> | </span>
-              <a href="#">ID/PW 찾기</a>
+                <a href="/member/signup">회원가입</a>
+
+                <span> | </span>
+                <a href="#">ID/PW 찾기</a>
+              </article>
+    
+            </form>
+          </th:block>
+          
+          <!-- 로그인이 되어있는 경우 -->
+          
+          <!-- <th:block th:unless="${session.loginMember == null}"></th:block> -->
+          <th:block th:if="${session.loginMember != null}">
+            <article class="login-area">
+              <!-- 시멘틱 태그 div 와 속성 똑같음 -->
+              <a href="/myPage/profile">
+                <!-- 프로필 이미지 -->
+
+                <!-- messages.properties에 작성된 기본 사용자 이미지
+                  -> session.loginMember.profileImg 에 유저가 등록한 이미지가 있다면 ( null이 아니라면 )
+                     session.loginMember.profileImg 에 저장된 이미지 경로를 쓰겠다.
+                     없다면 (null 이라면) user(/images/user.png) 를 쓰겠다. -->
+                <img th:with="user=#{user.default.image}" 
+                  th:src="${session.loginMember.profileImg ?: user}" 
+                  id="memberProfile" 
+                  alt="프로필 이미지" >
+                <!-- th:with 변수 만드는 거 user라고 부르겠다-->
+                <!-- session 에 loginMember img 가 null이 아니면(이미지 등록했으면) 그거 쓰고
+                없으면 user 쓰겠다. -->
+              </a>
+
+              <!-- 닉네임, 이메일, 로그아웃 버튼 영역 -->
+              <div class="my-info" th:object="${session.loginMember}">
+
+                <div>
+                  <a href="/myPage/info" id="nickname" th:text="*{memberNickname}">닉네임</a>
+                  <a href="/member/logout" id="logoutBtn">로그아웃</a>
+                </div>
+
+                <p th:text="*{memberEmail}">이메일</p>
+              </div>
             </article>
-  
-          </form>
+          </th:block>
+
 
       </section>
 
