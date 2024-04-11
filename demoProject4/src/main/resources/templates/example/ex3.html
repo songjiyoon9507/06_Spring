@@ -24,6 +24,31 @@
             <a th:href="@{/board(key=${key}, query=${query})}">@{} 사용</a>
             <!-- /board?key=제목&query=검색어 -->
         </li>
+
+        <li>
+            PathVariable : 주소 중 일부분을 변수 값 처럼 사용
+
+            <ul>
+                <li>
+                    <a href="/example/ex3/1">/example/ex3/1</a>
+                </li>
+                <li>
+                    <a href="/example/ex3/2">/example/ex3/2</a>
+                </li>
+                <li>
+                    <a href="/example/ex3/3">/example/ex3/3</a>
+                </li>
+
+                <li>
+                    <a th:href="@{/example/ex3/{number}(number=${boardNo})}">@{/example/ex3/{number}(number=${boardNo})}</a>
+                    <!-- number 자리에 boardNo를 넣겠다 -->
+                </li>
+            </ul>
+
+
+        </li>
     </ul>
+
+    <th:block th:replace="~{fragments/footer}"></th:block>
 </body>
 </html>
