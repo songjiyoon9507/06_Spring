@@ -1,6 +1,10 @@
 package com.home.todo.model.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
+
+import com.home.todo.model.dto.Todo;
 
 /* @Mapper
  * - Mybatis 에서 제공하는 어노테이션
@@ -20,5 +24,20 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface TodoMapper {
+
+	/* Mapper 의 메서드명 == mapper.xml 파일 내 태그의 id
+	 * 
+	 * 메서드명과 id 가 같은 태그가 서로 연결됨
+	 * */
+	
+	/** 할 일 목록 조회
+	 * @return todoList
+	 */
+	List<Todo> selectAll();
+
+	/** 완료된 할 일 개수 조회
+	 * @return completeCount
+	 */
+	int getCompleteCount();
 
 }

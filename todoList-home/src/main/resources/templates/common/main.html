@@ -7,6 +7,33 @@
 </head>
 <body>
     <h1>Todo List</h1>
-    
+
+    <!-- ${#lists.size(todoList)} == ${todoList.size()} -->
+    <h3 th:text="|전체 Todo 개수 : ${#lists.size(todoList)}개 / 
+    완료된 Todo 개수 : ${completeCount}개|">내용</h3>
+
+    <table border="1">
+        <thead>
+            <th>번호</th>
+            <th>할 일 제목</th>
+            <th>완료 여부</th>
+            <th>등록 날짜</th>
+        </thead>
+
+        <tbody>
+            <tr th:each="todo : ${todoList}" th:object="${todo}">
+                
+                <td th:text="*{todoNo}">할 일 번호</td>
+
+                <td>
+                    <a th:text="*{todoTitle}">할 일 제목</a>
+                </td>
+
+                <td th:text="*{complete}">완료 여부(Y/N)</td>
+
+                <td th:text="*{regDate}">등록일</td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 </html>
