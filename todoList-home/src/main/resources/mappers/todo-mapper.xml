@@ -70,4 +70,13 @@
 		INSERT INTO TB_TODO
 		VALUES(SEQ_TODO_NO.NEXTVAL, #{todoTitle}, #{todoContent}, DEFAULT, DEFAULT)
 	</insert>
+	
+	<!-- 할 일 상세 조회 -->
+	<!-- com.home.todo.model.dto.Todo (원래이름) == Todo (별칭) -->
+	<select id="todoDetail" parameterType="_int" resultType="Todo">
+		SELECT TODO_NO, TODO_TITLE , TODO_CONTENT , COMPLETE,
+		TO_CHAR(REG_DATE, 'YYYY-MM-DD HH24:MI:SS') REG_DATE 
+		FROM TB_TODO
+		WHERE TODO_NO = ${todoNo}
+	</select>
 </mapper>
