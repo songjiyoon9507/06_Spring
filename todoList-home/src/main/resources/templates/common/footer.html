@@ -1,0 +1,13 @@
+
+<!-- message 값 alert 띄워줄 script 작성 -->
+<script th:inline="javascript">
+    // th:inline="javascript" 적어두면 script 태그 안에서 thymeleaf 사용할 수 있음
+    const message = /*[[${message}]]*/ "전달받은메세지";
+
+    // 전달 받은 message가 없으면 null
+
+    if(message != null) {
+        alert(message);
+    }
+
+</script>

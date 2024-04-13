@@ -36,4 +36,38 @@
 		FROM TB_TODO
 		WHERE COMPLETE = 'Y'
 	</select>
+	
+	<!-- 
+		parameterType : 전달 받은 값(전달 인자/매개변수)의 타입을 명시
+		-> DTO, Map 인 경우 필드명/key 를 입려해서 하나씩 꺼내올 수 있음
+	 -->
+	
+	<!-- 
+		mapper 에서 java 의 data(파라미터)를 SQL에 삽입하는 방법
+		
+		1) #{변수명 | 필드명} : SQL에 삽입 시 양쪽에 ''(홑따옴표) 붙여서 삽입
+		
+		2) ${변수명 | 필드명} : SQL에 삽입 시 양쪽에 ''(홑따옴표) 붙이지 않고 삽입
+		
+		-> ${} 는 삽입한 값이 숫자일 경우 (숫자 리터럴에 '' 없음)
+		==> 숫자는 #{}로 써도 됨 DB에서 자동 변환
+		
+		-> SQL문 자체가 변해야 하는 경우에 사용
+		ex) java 에서 보낸 파라미터가 String ENROLL_DATE
+			SELECT MEMBER_NAME, ${key} FROM "MEMBER"
+			
+			- ${key} == ENROLL_DATE 인 경우
+			SELECT MEMBER_NAME, ENROLL_DATE FROM "MEMBER"
+			
+			- ${key} == MEMBER_ADRESS 인 경우
+			SELECT MEMBER_NAME, MEMBER_ADDRESS FROM "MEMBER"
+			
+			이럴 때 #{}으로 쓰면 'ENROLL_DATE' 로 들어가서 컬럼명의 역할을 하지 못함
+	 -->
+	
+	<!-- 할 일 추가 -->
+	<insert id="addTodo" parameterType="Todo">
+		INSERT INTO TB_TODO
+		VALUES(SEQ_TODO_NO.NEXTVAL, #{todoTitle}, #{todoContent}, DEFAULT, DEFAULT)
+	</insert>
 </mapper>

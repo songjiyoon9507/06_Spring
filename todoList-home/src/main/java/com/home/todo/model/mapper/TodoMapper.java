@@ -40,4 +40,10 @@ public interface TodoMapper {
 	 */
 	int getCompleteCount();
 
+	/** 할 일 추가
+	 * @param todo
+	 * @return result
+	 */
+	int addTodo(Todo todo);
+
 }
