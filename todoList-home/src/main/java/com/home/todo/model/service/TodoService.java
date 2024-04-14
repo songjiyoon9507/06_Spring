@@ -24,4 +24,16 @@ public interface TodoService {
 	 */
 	Todo todoDetail(int todoNo);
 
+	/** 완료 여부 변경
+	 * @param todo
+	 * @return result
+	 */
+	int changeComplete(Todo todo);
+
+	/** 할 일 수정
+	 * @param todo
+	 * @return result
+	 */
+	int todoUpdate(Todo todo);
+
 }

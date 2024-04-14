@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="|${todo.todoNo}번 할 일 수정|"></title>
+</head>
+<body>
+    <h1 th:text="|${todo.todoNo}번 할 일 수정|"></h1>
+    <hr>
+
+    <form action="/todo/update" method="post">
+        <div>
+            <!-- 이전에 작성되어있었던 내용 가져와서 보여주기 위해서 thymeleaf 사용 -->
+            제목 : <input type="text" name="todoTitle" th:value="${todo.todoTitle}">
+            <!-- thymeleaf 사용시 html 에서 사용할 수 있는 속성들 앞에 th 만 붙이면 다 쓸 수 있음 -->
+        </div>
+
+        <div>
+            <textarea name="todoContent"
+                cols="50" rows="5" placeholder="상세 내용"
+                th:text="${todo.todoContent}"></textarea>
+            <!-- textarea 는 value 라는 속성이 없음 -->
+        </div>
+
+        <!-- 어떤 글에 대한 수정인지 요청 보낼 때 알려줘야함
+        GET 요청이었으면 queryString 에 값 담아서 보내줬겠지만 post 요청이라서
+        queryString 사용할 수 없음
+        input 태그 hidden 속성 추가해서 값 보내줄 거임 -->
+        <!-- 할 일 번호를 숨겨둠 : 요청 시 name=value 같이 보내줌 -->
+        <input type="hidden" name="todoNo" th:value="${param.todoNo}">
+        <!-- todo.todoNo 로 보내도 되지만 지금 parameter에 todoNo 가 실려있어서 param.todoNo으로 보냄 -->
+
+        <button>수정하기</button>
+    </form>
+
+    <th:block th:replace="~{common/footer}"></th:block>
+</body>
+</html>

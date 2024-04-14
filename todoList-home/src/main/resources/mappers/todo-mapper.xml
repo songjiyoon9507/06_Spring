@@ -79,4 +79,21 @@
 		FROM TB_TODO
 		WHERE TODO_NO = ${todoNo}
 	</select>
+	
+	<!-- 완료 여부 변경 -->
+	<update id="changeComplete" parameterType="Todo">
+		UPDATE TB_TODO SET
+		COMPLETE = #{complete}
+		WHERE TODO_NO = #{todoNo}
+	</update>
+	
+	<!-- 할 일 수정 -->
+	<!-- 파라미터가 DTO인 경우 : #{필드명}, ${필드명} -->
+	<!-- 파라미터가 Map인 경우 : #{key}, ${key} -->
+	<update id="todoUpdate" parameterType="Todo">
+		UPDATE TB_TODO SET
+		TODO_TITLE = #{todoTitle},
+		TODO_CONTENT = #{todoContent}
+		WHERE TODO_NO = #{todoNo}
+	</update>
 </mapper>
