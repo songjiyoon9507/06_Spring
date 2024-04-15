@@ -94,4 +94,16 @@ public class TodoServiceImpl implements TodoService {
 	public int todoDelete(int todoNo) {
 		return mapper.todoDelete(todoNo);
 	}
+
+	// 전체 할 일 개수 조회
+	@Override
+	public int getTotalCount() {
+		return mapper.getTotalCount();
+	}
+
+	// 완료된 할 일 개수 조회
+	@Override
+	public int getCompleteCount() {
+		return mapper.getCompleteCount();
+	}
 }

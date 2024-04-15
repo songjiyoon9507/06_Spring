@@ -42,4 +42,14 @@ public interface TodoService {
 	 */
 	int todoDelete(int todoNo);
 
+	/** 전체 할 일 개수 조회
+	 * @return totalCount
+	 */
+	int getTotalCount();
+
+	/** 완료된 할 일 개수 조회
+	 * @return completeCount
+	 */
+	int getCompleteCount();
+
 }
