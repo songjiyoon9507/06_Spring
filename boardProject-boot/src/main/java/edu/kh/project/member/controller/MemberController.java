@@ -146,7 +146,14 @@ public class MemberController {
 	@GetMapping("checkNickname")
 	public int checkNickname(@RequestParam("memberNickname") String memberNickname) {
 		
-		return service.checkNickname(memberNickname);
+		int result = service.checkNickname(memberNickname);
+		
+		log.debug("result ={}", result);
+		log.debug("result ={}", result);
+		log.debug("result ={}", result);
+		log.debug("result ={}", result);
+		
+		return result;
 	}
 	
 	/** 회원 가입

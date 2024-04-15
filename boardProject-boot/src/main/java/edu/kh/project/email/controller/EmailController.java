@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import edu.kh.project.email.model.service.EmailService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequestMapping("email")
 @RequiredArgsConstructor // final 필드 / @NotNull 필드에 자동으로 의존성 주입 (@Autowired 생성자 방식 코드 자동완성)
@@ -24,6 +26,8 @@ public class EmailController {
 	public int signup(@RequestBody String email) {
 		
 		String authKey = service.sendEmail("signup", email);
+		
+		log.debug(authKey);
 		
 		if(authKey != null) { // 인증번호가 반환돼서 돌아옴
 			// == 이메일 보내기 성공

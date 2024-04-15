@@ -74,6 +74,7 @@ public class MemberServiceImpl implements MemberService {
 	// 닉네임 중복 검사
 	@Override
 	public int checkNickname(String memberNickname) {
+		log.debug("닉네임 숫자" + mapper.checkNickname(memberNickname));
 		return mapper.checkNickname(memberNickname);
 	}
 
