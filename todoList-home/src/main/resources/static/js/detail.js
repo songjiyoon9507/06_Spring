@@ -30,7 +30,7 @@ completeBtn.addEventListener("click", e => {
 
     // 완료 여부 수정 요청하기 (요청 주소 작성)
     location.href = `/todo/changeComplete?todoNo=${todoNo}&complete=${complete}`;
-    
+
     // /todo/changeComplete?todoNo=3&complete=Y
     // -> 이런 식으로 넘어갈 거임
 });
@@ -44,4 +44,17 @@ updateBtn.addEventListener("click", e => {
     const todoNo = e.target.dataset.todoNo;
 
     location.href = `/todo/update?todoNo=${todoNo}`;
+});
+
+// -------------------------------------------------
+
+// 삭제 버튼 클릭 시
+const deleteBtn = document.querySelector("#deleteBtn");
+
+deleteBtn.addEventListener("click", e => {
+
+    if (confirm("정말 삭제하시겠습니까?")) {
+        // 확인 눌렀을 때
+        location.href = `/todo/delete?todoNo=${e.target.dataset.todoNo}`;
+    }
 });

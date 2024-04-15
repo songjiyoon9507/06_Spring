@@ -177,4 +177,37 @@ public class TodoController {
 		
 		return path;
 	}
+	
+	/** 할 일 삭제
+	 * @param todoNo : 삭제할 할 일 번호
+	 * @param ra
+	 * @return 메인페이지/상세페이지
+	 */
+	@GetMapping("delete")
+	public String todoDelete(@RequestParam("todoNo") int todoNo,
+			RedirectAttributes ra) {
+		
+		// sql 에서 delete 구문 사용할 거
+		int result = service.todoDelete(todoNo);
+		
+		// 분기 처리
+		String path = null;
+		String message = null;
+		
+		if(result > 0) { // 성공
+			
+			// 메인 페이지로 리다이렉트
+			message = "삭제 성공";
+			path = "/";
+			
+		} else { // 실패
+			
+			path = "/todo/detail?todoNo=" + todoNo;
+			message = "삭제 실패";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:" + path;
+	}
 }

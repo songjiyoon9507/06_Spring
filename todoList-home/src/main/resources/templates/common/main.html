@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TodoList-home</title>
 </head>
+
 <body>
     <h1>Todo List</h1>
+
+    <hr>
+
+    <h3><a href="/ajax/main">TodoList - Ajax 버전</a></h3>
 
     <!-- 할 일 추가 form -->
     <form action="/todo/add" method="post">
@@ -17,8 +23,7 @@
         </div>
 
         <div>
-            <textarea name="todoContent"
-                cols="50" rows="5" placeholder="상세 내용"></textarea>
+            <textarea name="todoContent" cols="50" rows="5" placeholder="상세 내용"></textarea>
         </div>
 
         <button>추가하기</button>
@@ -38,7 +43,7 @@
 
         <tbody>
             <tr th:each="todo : ${todoList}" th:object="${todo}">
-                
+
                 <td th:text="*{todoNo}">할 일 번호</td>
 
                 <td>
@@ -46,8 +51,7 @@
                         url 주소 조합이 필요함 위에 th:object 있어서 *{todoNo}
                         없었으면 #{todo.todoNo}
                     -->
-                    <a th:href="@{/todo/detail(todoNo=*{todoNo})}"
-                    th:text="*{todoTitle}">할 일 제목</a>
+                    <a th:href="@{/todo/detail(todoNo=*{todoNo})}" th:text="*{todoTitle}">할 일 제목</a>
                 </td>
 
                 <td th:text="*{complete}">완료 여부(Y/N)</td>
@@ -62,4 +66,5 @@
     -->
     <th:block th:replace="~{common/footer}"></th:block>
 </body>
+
 </html>
