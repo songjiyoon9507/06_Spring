@@ -1,5 +1,6 @@
 package com.home.todo.model.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.home.todo.model.dto.Todo;
@@ -51,5 +52,10 @@ public interface TodoService {
 	 * @return completeCount
 	 */
 	int getCompleteCount();
+
+	/** 할 일 목록 조회
+	 * @return todoList
+	 */
+	List<Todo> selectList();
 
 }
