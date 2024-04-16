@@ -11,6 +11,20 @@ const addBtn = document.querySelector("#addBtn");
 // 할 일 목록 조회 관련 요소
 const tbody = document.querySelector("#tbody");
 
+// 할 일 상세 조회 관련 요소
+const popupLayer = document.querySelector("#popupLayer");
+const popupTodoNo = document.querySelector("#popupTodoNo");
+const popupTodoTitle = document.querySelector("#popupTodoTitle");
+const popupClose = document.querySelector("#popupClose");
+const popupComplete = document.querySelector("#popupComplete");
+const popupRegDate = document.querySelector("#popupRegDate");
+const popupTodoContent = document.querySelector("#popupTodoContent");
+
+// 상세 조회 팝업 레이어에 있는 버튼
+const changeComplete = document.querySelector("#changeComplete");
+const updateView = document.querySelector("#updateView");
+const deleteBtn = document.querySelector("#deleteBtn");
+
 // 전체 todo개수 조회 및 출력하는 함수 정의
 function getTotalCount() {
 
@@ -113,11 +127,65 @@ addBtn.addEventListener("click", () => {
     });
 });
 
+// --------------------------------------------------------------
+
+// 할 일 목록에서 할 일 제목 a 태그 누르면 상세 조회 되게 만들 거
+// 비동기(ajax)로 할 일 상세 조회하는 함수
+const selectTodo = (url) => {
+    // 함수에서 받는 매개변수
+    // url == "/ajax/detail?todoNo=" + todo.todoNo 형태의 문자열
+
+    // response.json() : 
+    // - 응답 데이터가 JSON인 경우
+    //   이를 자동으로 Object 형태로 변환하는 메서드
+    //   == JSON.parse(JSON 데이터)
+    // 단일 값은 .text()
+    // java 객체 형태는 .json()
+    // java 단에서 JSON 으로 넘겼을 때 사용
+
+    fetch(url)
+    .then(resp => resp.json())
+    .then(todo => {
+        // 매개변수 todo :
+        // - 서버 응답(JSON)이 Object로 반환된 값
+
+        // popup Layer에 조회된 값을 출력
+        popupTodoNo.innerText = todo.todoNo; // key 값으로 접근해서 value 값 꺼내옴
+        popupTodoTitle.innerText = todo.todoTitle;
+        popupComplete.innerText = todo.complete;
+        popupRegDate.innerText = todo.regDate;
+        popupTodoContent.innerText = todo.todoContent;
+
+        // popup Layer 보이게 하기
+        popupLayer.classList.remove("popup-hidden");
+
+    });
+}
+
+// fetch(url) // 누르는 거에 따라 url 주소 달라짐
+// .then(resp => resp.text())
+// .then(result => {
+
+//     // result 에는 JSON 형태 string 으로 값이 들어있음
+//     const todo = JSON.parse(result);
+//     // JSON.parse(result) => String 형태의 JSON 을 JS 객체로 만들어주는 거
+
+// });
+
+// ---------------------------------------------------------------
+
+// 상세 조회 창에서 x 버튼 클릭시 닫히게하기
+// popup Layer의 x 버튼 (#popupClose) 클릭 시 닫기
+popupClose.addEventListener("click", () => {
+    // 숨기는 class 추가
+    popupLayer.classList.add("popup-hidden");
+})
+
 // ---------------------------------------------------------------
 
 // 비동기로 할 일 목록 조회하는 함수
 const selectTodoList = () => {
-    
+
     fetch("/ajax/selectList")
     .then(resp => resp.text()) // 응답 결과를  text로 변환
     .then(result => {
@@ -133,6 +201,9 @@ const selectTodoList = () => {
         // - JS Object 타입을 String 형태의 JSON 데이터로 변환
         const todoList = JSON.parse(result);
         // JS 객체 형태로 변환 K : V
+
+        // 기존에 출력되어있던 할 일 목록을 모두 삭제
+        tbody.innerHTML = "";
 
         // #tbody 에 tr/td 요소를 생성해서 내용 동적으로 추가하기
         // 하나씩 접근해서 꺼내줘야함
@@ -164,7 +235,7 @@ const selectTodoList = () => {
                         e.preventDefault(); // 기본 이벤트 막기
 
                         // 할 일 상세 조회 비동기 요청
-                        // selectTodo(e.target.href);
+                        selectTodo(e.target.href);
                         // e.target.href : 클릭된 a 태그의 href 속성 값을 넘겨줄 거라는 뜻
                         // "/ajax/detail?todoNo=" + todo.todoNo;
                     });
@@ -182,6 +253,11 @@ const selectTodoList = () => {
 
     });
 };
+
+
+
+
+
 
 getTotalCount(); // 함수 호출
 getCompleteCount(); // 함수 호출
