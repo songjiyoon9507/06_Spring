@@ -40,7 +40,10 @@
            - URL 인코딩된 "문자열" 로 서버에 제출
 
 
-          * multipart/form-data  (무조건 POST에서만 동작)
+          * multipart/form-data  (무조건 POST에서만 동작 (일반적))
+            GET 요청 권장하지 않음 URL 데이터 첨부해서 보냄
+            파일에 대한 내용들이 붙음 굉장히 긺
+            -> GET 요청 데이터 보낼 때 길이 제한 있음
 
            - 제출되는 여러 데이터 타입에 맞춰서 인코딩하여 제출
             문자열 -> String
@@ -53,10 +56,47 @@
 
         </pre>
 
-     	
-        
+        <form action="/myPage/file/test1"
+            method="post"
+            enctype="multipart/form-data"
+        >
+          <h3>업로드 테스트 1</h3>
 
+          <!-- type="file" 도 결국에는 Parameter
+               -> @RequestParam으로 처리 가능
+          -->
+          <input type="file" name="uploadFile">
 
+          <button class="myPage-submit">제출하기</button>
+        </form>
+
+        <!-- a 태그의 download 속성
+          - href 속성에 작성된 요청에 대한 응답을 다운로드함
+        -->
+        <a th:if="${path != null}"
+          th:text="${path}"
+          th:href="${path}"
+        download>업로드한 파일</a>
+
+        <!-- <form enctype="application/x-www-form-urlencoded">
+           쓴 적 없지만 기본값 
+          <input type="text">
+           이름, 번호, 주소 
+        </form>
+         form 태그 enctype="application/x-www-form-urlencoded"
+          이게 기본값이라서
+          Controller 에서 수집한 모든 값들이 string 이었음
+
+        <input type="file">
+        파일 선택하면 파일 선택 창 열리면서 데이터가 들어감
+        제출될 내용 중 type="file"
+        multipart/form-data form 태그 enctype="multipart/form-data" 꼭 써줘야함
+
+        파일만 보내는 게 아니라 다른 값을 쓸 수도 있음 form 태그 안에
+        form 태그 안에 사진,이미지, 이름, 나이 도 제출해야하면
+        버튼도 있을 거임
+        하나의 form 태그에 file, text, number 인코딩 방식이 각자 다 다름
+        서버에 제출할 때 각각 인코딩해서 제출 -->
       </section>
 
     </section>

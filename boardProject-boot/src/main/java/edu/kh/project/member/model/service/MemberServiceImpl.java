@@ -1,5 +1,7 @@
 package edu.kh.project.member.model.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -117,6 +119,65 @@ public class MemberServiceImpl implements MemberService {
 		// 회원 가입 매퍼 메서드 호출
 		return mapper.signup(inputMember);
 	}
+
+	@Override
+	public Member testLogin(String memberEmail) {
+		return mapper.testLogin(memberEmail);
+	}
+
+	@Override
+	public List<Member> memberList() {
+		
+		return mapper.memberList();
+	}
+
+	// 빠른 로그인
+	// -> 일반 로그인에서 비밀번호 비교만 제외
+	@Override
+	public Member quickLogin(String memberEmail) {
+		
+		Member loginMember = mapper.login(memberEmail);
+		
+		// 탈퇴 or 없는 회원
+		if(loginMember == null) return null;
+		
+		// 조회된 비밀번호 null 로 변경
+		loginMember.setMemberPw(null);
+		
+		return loginMember;
+	}
+
+	@Override
+	public List<Member> selectAll() {
+		return mapper.selectAll();
+	}
+
+	// 비밀번호 초기화
+	@Override
+	public int resetPw(int memberNo) {
+		String encPw = bcrypt.encode("pass01!");
+		
+//		log.debug("encPw : " + encPw);
+		
+		Member resetMember = new Member();
+		
+		resetMember.setMemberNo(memberNo);
+		resetMember.setMemberPw(encPw);
+		
+		return mapper.resetPw(resetMember);
+	}
+
+	@Override
+	public int restorationMemberNo(int memberNo) {
+		
+		// 이메일 한번 조회해서 같은 이메일 있는지도 체크
+		
+		return mapper.restorationMemberNo(memberNo);
+	}
+
+
+	
+	
 }
 
 /* BCrypt 암호화 (Spring Security 제공)

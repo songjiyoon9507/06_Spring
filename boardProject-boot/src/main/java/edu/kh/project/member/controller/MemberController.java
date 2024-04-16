@@ -1,10 +1,15 @@
 package edu.kh.project.member.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,7 +20,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import edu.kh.project.member.model.dto.Member;
 import edu.kh.project.member.model.service.MemberService;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 /* @SessionAttributes( {"key", "key", "key", ...} )
@@ -185,5 +192,65 @@ public class MemberController {
 		ra.addFlashAttribute("message", message);
 		
 		return "redirect:" + path;
+	}
+	
+	@GetMapping("testLogin")
+	@ResponseBody
+	public int testLogin(@RequestParam("memberEmail") String memberEmail, Model model,
+						RedirectAttributes ra, HttpServletRequest request
+						) {
+  
+		log.debug(memberEmail);
+  
+		Member findMember = service.testLogin(memberEmail);
+		
+		if(findMember == null) {
+			return 0;
+		}
+		HttpSession session = request.getSession();
+		session.setAttribute("loginMember", findMember);
+		return 1;
+      
+	}
+	
+	@GetMapping("quickLogin")
+	public String quickLogin(
+			@RequestParam("memberEmail") String memberEmail,
+			Model model,
+			RedirectAttributes ra
+			) {
+		
+		Member loginMember = service.quickLogin(memberEmail);
+		
+		if(loginMember == null) {
+			ra.addFlashAttribute("message", "해당 이메일이 존재하지 않습니다.");
+		} else {
+			model.addAttribute("loginMember", loginMember);
+		}
+		
+		return "redirect:/";
+	}
+	
+	@ResponseBody
+	@GetMapping("selectAll")
+	public List<Member> selectAll() {
+		
+		List<Member> memberList = service.selectAll();
+		
+		return memberList;
+	}
+	
+	@ResponseBody
+	@PutMapping("resetPw")
+	public int resetPw(@RequestBody int memberNo) {
+		// @RequestParam 으로 받아오는 건 input 태그 name 속성값, 쿼리스트링의 key
+		return service.resetPw(memberNo);
+	}
+	
+	@ResponseBody
+	@PutMapping("restorationMemberNo")
+	public int restorationMemberNo(@RequestBody int memberNo) {
+		
+		return service.restorationMemberNo(memberNo);
 	}
 }

@@ -63,4 +63,36 @@
 			DEFAULT
 		)
 	</insert>
+	
+	<select id="testLogin" resultType="Member">
+	    SELECT * FROM MEMBER
+	    WHERE MEMBER_EMAIL = #{memberEmail}
+	</select>
+	
+	<select id="memberList">
+		SELECT MEMBER_NO, MEMBER_EMAIL, MEMBER_NICKNAME, MEMBER_PW,
+		MEMBER_TEL, MEMBER_ADDRESS, PROFILE_IMG, AUTHORITY,
+		TO_CHAR(ENROLL_DATE, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') ENROLL_DATE
+		FROM "MEMBER"
+		WHERE MEMBER_DEL_FL = 'N'
+		ORDER BY MEMBER_NO
+	</select>
+	
+	<select id="selectAll" resultType="Member">
+		SELECT MEMBER_NO, MEMBER_EMAIL, MEMBER_NICKNAME, MEMBER_DEL_FL
+		FROM "MEMBER"
+		ORDER BY MEMBER_NO
+	</select>
+	
+	<update id="resetPw" parameterType="Member">
+		UPDATE "MEMBER" SET
+		MEMBER_PW = #{memberPw}
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
+	
+	<update id="restorationMemberNo">
+		UPDATE "MEMBER" SET
+		MEMBER_DEL_FL = 'N'
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
 </mapper>

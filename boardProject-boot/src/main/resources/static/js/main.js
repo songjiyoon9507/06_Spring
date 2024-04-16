@@ -94,3 +94,151 @@ if(loginForm != null) {
         }
     });
 }
+
+/* const testLogin = document.querySelector('#test-login');
+
+testLogin.addEventListener('click', function(e){
+   
+   fetch('/member/testLogin?memberEmail=' + testLogin.innerText)
+   .then(resp => resp.text())
+   .then(result => {
+      
+      if(result == 1){
+         // 멤버를 찾은 경우
+         window.location.href = '/';
+      }
+      else{
+         alert('존재하지 않는 아이디입니다.');
+      }
+   })
+   .catch(error => console.log((error)))
+}); */
+
+// ------------------------------------------------------------
+
+/* 빠른 로그인 */
+const quickLoginBtns = document.querySelectorAll(".quick-login");
+
+quickLoginBtns.forEach((item, index) => {
+    // item : 현재 반복 시 꺼내온 객체
+    // index : 현재 반복 중인 인덱스
+
+    // quickLoginBtns 요소인 button 태그 하나씩 꺼내서 이벤트 리스너 추가
+    item.addEventListener("click", () => { // 각 버튼에 클릭 이벤트 추가
+        const email = item.innerText; // 버튼에 작성된 이메일 얻어오기
+
+        location.href = "/member/quickLogin?memberEmail=" + email;
+    })
+});
+
+// ------------------------------------------------------------
+
+/* 회원 목록 조회(비동기) */
+const selectMemberList = document.querySelector("#selectMemberList");
+
+const tbody = document.querySelector("#memberList");
+
+selectMemberList.addEventListener("click", () => {
+    
+    fetch("/member/selectAll")
+    .then(resp => resp.text())
+    .then(result => {
+        
+        const memberList = JSON.parse(result);
+
+        tbody.innerHTML = "";
+        // #tbody에 tr/td 요소를 생성해서 내용 추가
+        for(let member of memberList) { // 향상된 for문
+
+            // console.log(member);
+            // tr 태그 생성
+            const tr = document.createElement("tr");
+
+            const arr = ['memberNo', 'memberEmail', 'memberNickname', 'memberDelFl'];
+
+            for(let key of arr) {
+                const td = document.createElement("td");
+
+                tr.append(td);
+
+                td.innerText = member[key];
+
+                tr.append(td);
+            }
+            // tbody의 자식으로 tr(한 행) 추가
+            tbody.append(tr);
+        }
+    })
+});
+
+// -----------------------------------------------------------
+
+// 특정 회원 비밀번호 초기화(Ajax)
+const resetMemberNo = document.querySelector("#resetMemberNo");
+const resetPw = document.querySelector("#resetPw");
+
+resetPw.addEventListener("click", () => {
+
+    if(resetMemberNo.value.length == 0) {
+        alert("회원번호를 입력해주세요");
+        return;
+    } else {
+        
+        const memberNo = resetMemberNo.value;
+    
+        // console.log("memberNo : " + memberNo);
+    
+        fetch("/member/resetPw", {
+            method : "PUT",
+            headers : {"Content-Type" : "application/json"},
+            body : memberNo
+        })
+        .then(resp => resp.text())
+        .then(result => {
+            // update 결과값 반환
+            if(result > 0) {
+                resetMemberNo.value = "";
+                alert("비밀번호 초기화 성공");
+            } else {
+                resetMemberNo.value = "";
+                alert("존재하지 않는 회원 번호입니다.");
+            }
+        })
+    }
+
+})
+
+// -------------------------------------------------------
+
+// 특정 회원 탈퇴 복구 (Ajax)
+const restorationBtn = document.querySelector("#restorationBtn");
+const restorationMemberNo = document.querySelector("#restorationMemberNo");
+
+restorationBtn.addEventListener("click", () => {
+
+    if(restorationMemberNo.value.trim().length == 0) {
+        alert("회원번호를 입력해주세요");
+        return;
+    } else {
+        
+        const memberNo = restorationMemberNo.value;
+    
+        fetch("/member/restorationMemberNo", {
+            method : "PUT",
+            headers : {"Content-Type" : "application/json"},
+            body : memberNo
+        })
+        .then(resp => resp.text())
+        .then(result => {
+            // update 결과값 반환
+            if(result > 0) {
+                restorationMemberNo.value = "";
+                alert("탈퇴 복구 성공");
+            } else {
+                restorationMemberNo.value = "";
+                alert("존재하지 않는 회원 번호입니다.");
+            }
+        })
+    }
+
+});

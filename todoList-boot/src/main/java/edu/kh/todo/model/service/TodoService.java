@@ -5,9 +5,6 @@ import java.util.Map;
 
 import edu.kh.todo.model.dto.Todo;
 
-/**
- * 
- */
 public interface TodoService {
 
 	/** 할 일 목록 + 완료된 할 일 개수 조회
