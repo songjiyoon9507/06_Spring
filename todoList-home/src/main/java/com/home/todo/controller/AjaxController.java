@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -123,5 +124,18 @@ public class AjaxController {
 		return service.todoDetail(todoNo);
 		// return 자료형 : Todo
 		// -> HttpMessageConverter 가 String(JSON)형태로 변환해서 반환해줌
+	}
+	
+	@ResponseBody
+	@DeleteMapping("delete") // Delete 방식 요청 처리 (비동기 요청만 가능)
+	public int todoDelete(@RequestBody int todoNo) { // js body 에 실어서 보낸 거 받기
+		// REST API (AJAX) 형식 기반 이용
+		// DELETE/PUT 비동기에서만 가능
+		// GET/POST 는 비동기, 동기 둘 다 사용 가능
+		// REST API -> RESTFUL 자원(데이터) 중심 고유한 uri 로 식별하는 거
+		// 웹 / 모바일 다양한 플랫폼에서 접근할 때 원할하게 수행 REST API
+		// 요청 주소 자체도 단순화 해서 사용
+		
+		return service.todoDelete(todoNo);
 	}
 }

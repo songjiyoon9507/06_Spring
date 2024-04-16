@@ -254,10 +254,62 @@ const selectTodoList = () => {
     });
 };
 
+// -----------------------------------------------
+
+// 삭제 버튼 클릭 시
+deleteBtn.addEventListener("click", () => {
+
+    // 정말 삭제하시겠습니까? 물어보고
+    // 취소 클릭 시 아무것도 안함
+    if(!confirm("정말 삭제하시겠습니까?")) {
+        // 부정논리연산자 붙여서 취소 클릭했을 때 if문 수행
+        return;
+    }
+
+    // 확인 버튼 클릭 시
+    // 현재 삭제하려는 할 일 번호 얻어오기
+    const todoNo = popupTodoNo.innerText;
+    // 삭제 버튼은 상세 조회 모달창 떴을 때 뜨는 버튼
+    // #popupTodoNo 내용 얻어오기
+
+    // 요청할 때 todoNo 같이 보낼 거임
+    // 비동기 DELETE 방식 요청
+    fetch("/ajax/delete", {
+        method : "DELETE", // DELETE 방식 요청 -> Controller 에서 @DeleteMapping 으로 요청 처리
+        headers : {"Content-Type" : "application/json"},
+        // 데이터 하나를 전달하더라도 JSON 방식이란 걸 알려줘야해서
+        // application/json 작성해줘야함
+        body : todoNo
+        // todoNo 값을 body 에 담아서 전달하겠다.
+        // -> Controller에서 @RequestBody 로 꺼냄
+    })
+    .then(resp => resp.text())
+    .then(result => {
+
+        if(result > 0) {
+            // 삭제 성공
+            alert("삭제 성공");
+            // 삭제 후 상세조회 창 닫아줄 거
+            popupLayer.classList.add("popup-hidden");
+
+            // 전체, 완료된 할 일 개수 다시 조회
+            // + 할 일 목록 다시 조회
+            selectTodoList();
+            getTotalCount();
+            getCompleteCount();
+        } else {
+            // 삭제 실패
+            alert("삭제 실패");
+        }
+    })
 
 
 
 
+});
 
+
+
+selectTodoList();
 getTotalCount(); // 함수 호출
 getCompleteCount(); // 함수 호출
