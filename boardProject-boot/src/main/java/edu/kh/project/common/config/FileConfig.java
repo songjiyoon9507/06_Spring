@@ -37,6 +37,14 @@ public class FileConfig implements WebMvcConfigurer {
 	@Value("${spring.servlet.multipart.location}")
 	private String location;
 	
+	// -----------------------------------------------
+	// 프로필 이미지
+	@Value("${my.profile.resource-handler}")
+	private String profileResourceHandler;
+	
+	@Value("${my.profile.resource-location}")
+	private String profileResourceLocation;
+	
 	// ctrl + space
 	// 요청 주소에 따라
 	// 서버 컴퓨터의 어떤 경로에 접근할지 설정
@@ -46,9 +54,19 @@ public class FileConfig implements WebMvcConfigurer {
 		.addResourceLocations("file:///C:/uploadFiles/test/");
 		// 클라이언트가 /myPage/file/** 패턴으로 이미지를 요청할 때
 		// 요청을 연결해서 처리해줄 서버 폴더 경로 연결
+		
+		// 프로필 이미지 요청 - 서버 폴더 연결 추가
+		registry.addResourceHandler(profileResourceHandler) // /myPage/profile/**
+		.addResourceLocations(profileResourceLocation); // file:///C:/uploadFiles/profile/
+		
+		// file:///C: 는 파일 시스템의 루트 디렉토리
+		
+		// file:// 은 URL 스킴(Scheme), 파일 시스템의 리소스
+		// /C: 는 Windows 시스템에서 C드라이브를 가리킴.
+		// file:///C: 는 "C 드라이브의 루트 디렉토리"를 의미함.
 	}
 	
-	/* MultipartResolver 설정 */
+	/* MultipartResolver 가 사용할 구성 설정 내용 */
 	@Bean
 	public MultipartConfigElement configElement() {
 		// MultipartConfigElement
@@ -60,7 +78,7 @@ public class FileConfig implements WebMvcConfigurer {
 		// config.properties 에 적어둘 거임
 		
 		MultipartConfigFactory factory = new MultipartConfigFactory();
-		
+		// 공장 설비
 		factory.setFileSizeThreshold(DataSize.ofBytes(fileSizeThreshold));
 		
 		factory.setMaxFileSize(DataSize.ofBytes(maxFileSize));
@@ -68,18 +86,19 @@ public class FileConfig implements WebMvcConfigurer {
 		factory.setMaxRequestSize(DataSize.ofBytes(maxRequestSize));
 		
 		factory.setLocation(location);
-		
+		// 구성 설정에 관한 객체
 		return factory.createMultipartConfig();
 	}
 	
 	// MultipartResolver 객체를 Bean 으로 추가함으로써
-	// -> 추가 후 Spring 이 위에서 만든 MultipartConfig 자동으로 이용할 거임
+	// -> 추가 후 Spring 이 위에서 만든 MultipartConfig 자동 주입돼서 이용할 거임
 	@Bean
 	public MultipartResolver multipartResolver() {
 		// MultipartResolver : MultipartFile 을 처리해주는 해결사
 		// MultipartResolver는 클라이언트로부터 받은 멀티파트 요청을 처리하고,
 		// 이 중에서 업로드된 파일을 추출하여 MultipartFile 객체로 제공하는 역할
 		
+		// MultipartResolver 인터페이스 StandardServletMultipartResolver 상속받은 자식
 		StandardServletMultipartResolver multipartResolver
 			= new StandardServletMultipartResolver();
 		
