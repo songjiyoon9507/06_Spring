@@ -25,6 +25,9 @@ const changeComplete = document.querySelector("#changeComplete");
 const updateView = document.querySelector("#updateView");
 const deleteBtn = document.querySelector("#deleteBtn");
 
+// 수정 레이어 버튼
+const updateLayer = document.querySelector("#updateLayer");
+
 // 전체 todo개수 조회 및 출력하는 함수 정의
 function getTotalCount() {
 
@@ -303,12 +306,74 @@ deleteBtn.addEventListener("click", () => {
         }
     })
 
-
-
-
 });
 
+// -----------------------------------------------------------
 
+// 완료 여부 변경 버튼 클릭 시
+changeComplete.addEventListener("click", () => {
+
+    // 변경할 할 일 번호, 완료 여부 (Y <-> N)
+    // js 에서 완료 여부를 반대로 바꿔서 java 에 넘겨줄 거임
+    // -> SQL 에서 삽입하기 편하게
+    const todoNo = popupTodoNo.innerText;
+    // 삼항 연산자 이용해서 완료 여부 바꿔서 대입해줄 거임
+    const complete = popupComplete.innerText === 'Y' ? 'N' : 'Y';
+    // Y 이면 N 으로 Y가 아니라면(== N) Y로
+
+    // SQL 수행에 필요한 값을 JS 객체 형태로 묶음
+    const obj = {"todoNo" : todoNo, "complete" : complete};
+
+    // 비동기로 완료 여부 변경
+    fetch("/ajax/changeComplete", {
+        method : "PUT",
+        headers : {"Content-Type" : "application/json"},
+        body : JSON.stringify(obj) // obj 값을 JSON 으로 변환해서 java 로 보내줌
+    })
+    .then(resp => resp.text())
+    .then(result => {
+
+        // result 성공한 행의 개수, 실패했으면 0
+        // 분기 처리
+        if(result > 0) {
+
+            // 성공했을 때 update된 DB 데이터를 다시 조회해서 화면에 출력
+            // -> 서버 부하가 큼
+
+            // selectTodo();
+            // => 서버 부하를 줄이기 위해 상세 조회에서 Y/N 만 바꾸기
+            popupComplete.innerText = complete;
+
+            // 완료된 Todo 개수도 바꿔줘야함
+            // 뒤에 화면에서도 Y, N 바뀐 거 알려줘야함
+
+            // getCompleteCount();
+            // 서버 부하를 줄이기 위해 완료된 Todo 개수 +-1
+            // innerText 로 가져오면 타입이 String
+            // 숫자형태로 변경해줘야함
+            const count = Number(completeCount.innerText);
+
+            if(complete === 'Y') completeCount.innerText = count + 1;
+            else completeCount.innerText = count - 1;
+
+            // 서버 부하 줄이기 가능은 하지만 코드가 복잡해서 다시 호출
+            selectTodoList();
+
+        } else {
+            // 실패했을 때
+            alert("완료 여부 변경 실패");
+        }
+    });
+});
+
+// -------------------------------------------------------------
+
+// 상세 조회에서 수정 버튼 (#updateView) 클릭 시
+updateView.addEventListener("click", () => {
+
+    // 기존 팝업 레이어는 숨기고
+    popupLayer.classList.add("popup-hidden");
+});
 
 selectTodoList();
 getTotalCount(); // 함수 호출
