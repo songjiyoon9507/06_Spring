@@ -27,6 +27,10 @@ const deleteBtn = document.querySelector("#deleteBtn");
 
 // 수정 레이어 버튼
 const updateLayer = document.querySelector("#updateLayer");
+const updateTitle = document.querySelector("#updateTitle");
+const updateContent = document.querySelector("#updateContent");
+const updateBtn = document.querySelector("#updateBtn");
+const updateCancel = document.querySelector("#updateCancel");
 
 // 전체 todo개수 조회 및 출력하는 함수 정의
 function getTotalCount() {
@@ -161,6 +165,10 @@ const selectTodo = (url) => {
 
         // popup Layer 보이게 하기
         popupLayer.classList.remove("popup-hidden");
+
+        // 수정 팝업 레이어 떠있는 상태에서 상세 조회 클릭시 두개 다 뜸
+        // update Layer 가 열린 상태에서 popupLayer가 열리면 updateLayer는 숨기기
+        updateLayer.classList.add("popup-hidden");
 
     });
 }
@@ -373,6 +381,93 @@ updateView.addEventListener("click", () => {
 
     // 기존 팝업 레이어는 숨기고
     popupLayer.classList.add("popup-hidden");
+
+    // 수정 팝업 레이어는 보이게
+    updateLayer.classList.remove("popup-hidden");
+
+    // 수정 팝업 레이어를 누르고 상세조회 누르면 두개 다 뜸
+    // selectTodo() 에서 update Layer 숨기기 추가
+
+    // 수정 레이어 보일 때
+    // 팝업 레이어에 작성된 제목, 내용을 얻어와 수정 레이어에 세팅
+    updateTitle.value = popupTodoTitle.innerText;
+    updateContent.value = popupTodoContent.innerHTML.replaceAll("<br>", "\n");
+    // html 화면에서는 줄바꿈이 <br>로 인식됨 (popupTodoContent.innerHTML로 가져온 값)
+    // updateContent 는 textarea 줄 바꿈이 \n 이라서 popupTodoContent 에서 가져온 <br>을
+    // 줄바꿈으로 인식하지 못해서 <br> 을 \n 로 바꿔주는 함수 작성
+
+    // 내용 수정 후 수정 버튼 누르면 값 넘어가는데
+    // 수정 레이어에 있는 수정 버튼에 data-todo-no 속성 추가해서
+    // 어떤 걸 수정했는지 알려줌
+    updateBtn.setAttribute("data-todo-no", popupTodoNo.innerText);
+});
+
+// ----------------------------------------------------------------
+
+// 수정 레이어에서 취소 버튼 (#updateCancel)이 클릭 되었을 때
+// 수정 팝업 레이어 숨기고 수정 레이어 보이게 설정
+updateCancel.addEventListener("click", () => {
+
+    // 수정 팝업 레이어 숨기기
+    updateLayer.classList.add("popup-hidden");
+
+    // 팝업 레이어 보이기
+    popupLayer.classList.remove("popup-hidden");
+});
+
+// ----------------------------------------------------------------
+
+updateBtn.addEventListener("click", e => {
+
+    // 서버로 전달해야되는 값을 객체로 묶어주기
+    const obj = {
+        "todoNo" : e.target.dataset.todoNo,
+        "todoTitle" : updateTitle.value,
+        "todoContent" : updateContent.value
+    };
+
+    // 비동기 요청
+    fetch("/ajax/update", {
+        method : "PUT",
+        headers : {"Content-Type" : "application/json"},
+        body : JSON.stringify(obj)
+    })
+    .then(resp => resp.text())
+    .then(result => {
+
+        if(result > 0) {
+            alert("수정 성공");
+
+            // 수정 레이어 숨기기
+            updateLayer.classList.add("popup-hidden");
+
+            // 업데이트에 성공해서 수정 팝업 레이어 안에 값은 바뀌는데
+            // 메인 페이지에서의 값은 바뀌지 않음
+            // 같이 값 바꿔줘야함
+            // + 다시 수정 버튼 눌렀을 때 이전에 입력했던 수정 값이 그대로 남아있음
+            // 값을 비워줘야함
+
+            // 목록 다시 조회
+            selectTodoList();
+
+            // 수정 성공 후에 alert 창 뜨고 상세 조회 페이지 보이게 설정
+            // 기존 상세 조회에 title, content 바꿔주기
+            // 함수 호출하는 것보다 부하 줄이기 위해
+            popupTodoTitle.innerText = updateTitle.value;
+
+            popupTodoContent.innerHTML = updateContent.value.replaceAll("\n", "<br>");
+
+            popupLayer.classList.remove("popup-hidden");
+
+            // 수정 레이어에 남은 흔적 제거
+            // updateTitle.value = "";
+            // updateContent.value = "";
+            // 아까 추가해둔 속성도 제거해줘야함
+            updateBtn.removeAttribute("data-todo-no");
+        } else {
+            alert("수정 실패");
+        }
+    })
 });
 
 selectTodoList();

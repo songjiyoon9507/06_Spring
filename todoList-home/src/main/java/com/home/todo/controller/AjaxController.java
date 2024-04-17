@@ -147,4 +147,11 @@ public class AjaxController {
 		// obj 의 key 값과 Todo 의 필드명이 같으면 obj의 value 값이 Todo 에 자동으로 setting 됨
 		return service.changeComplete(todo);
 	}
+	
+	// 할 일 수정
+	@ResponseBody
+	@PutMapping("update")
+	public int todoUpdate(@RequestBody Todo todo) {
+		return service.todoUpdate(todo);
+	}
 }
