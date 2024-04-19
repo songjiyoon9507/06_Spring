@@ -14,4 +14,13 @@
 	
 	<!-- parameterType 속성은 필수 속성 아님 -->
 	<!-- TypeHandler 를 이용해서 자료형을 판별할 수 있음 -->
+	
+	<!-- 이메일 중복 검사 -->
+	<!-- 탈퇴 하지 않은 사람 -->
+	<select id="checkEmail" resultType="_int">
+		SELECT COUNT(*)
+		FROM "MEMBER"
+		WHERE MEMBER_DEL_FL = 'N'
+		AND MEMBER_EMAIL = #{memberEmail}
+	</select>
 </mapper>
