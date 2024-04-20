@@ -1,10 +1,14 @@
 package com.home.board.member.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -190,5 +194,62 @@ public class MemberController {
 		ra.addFlashAttribute("message", message);
 		
 		return "redirect:" + path;
+	}
+	
+	/** 빠른 로그인
+	 * @param memberEmail
+	 * @param model
+	 * @param ra
+	 * @return 메인페이지
+	 */
+	@GetMapping("quickLogin")
+	public String quickLogin(
+			@RequestParam("memberEmail") String memberEmail,
+			Model model,
+			RedirectAttributes ra
+			) {
+		
+		Member loginMember = service.quickLogin(memberEmail);
+		
+		if(loginMember == null) {
+			ra.addFlashAttribute("message", "해당 이메일이 존재하지 않습니다.");
+		} else {
+			model.addAttribute("loginMember", loginMember);
+		}
+		
+		return "redirect:/";
+	}
+	
+	/** 회원 목록 조회
+	 * @return memberList
+	 */
+	@ResponseBody
+	@GetMapping("selectMemberList")
+	public List<Member> selectMemberList() {
+		
+		// (java)List
+		// (Spring) HttpMessageConverter 가 JSON Array (문자열)로 변경
+		// -> (JS) response => response.json() -> JS 객체 배열
+		return service.selectMemberList();
+	}
+	
+	/** 특정 회원 비밀번호 초기화
+	 * @param inputNo
+	 * @return result
+	 */
+	@ResponseBody
+	@PutMapping("resetPw")
+	public int resetPw(@RequestBody int inputNo) {
+		return service.resetPw(inputNo);
+	}
+	
+	/** 특정 회원 탈퇴 복구
+	 * @param memberNo
+	 * @return result
+	 */
+	@ResponseBody
+	@PutMapping("restorationMemberNo")
+	public int restorationMemberNo(@RequestBody int memberNo) {
+		return service.restorationMemberNo(memberNo);
 	}
 }

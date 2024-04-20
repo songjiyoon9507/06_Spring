@@ -1,5 +1,7 @@
 package com.home.board.myPage.controller;
 
+import java.util.Map;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.home.board.member.model.dto.Member;
@@ -128,4 +131,85 @@ public class MyPageController {
 		return "redirect:info";
 	}
 	
+	/** 비밀번호 변경
+	 * @param paramMap : 모든 파라미터를 맵으로 저장
+	 * @param loginMember : 세션 로그인한 회원 정보
+	 * @param ra
+	 * @return
+	 */
+	@PostMapping("changePw")
+	public String changePw(
+			@RequestParam Map<String, Object> paramMap,
+			@SessionAttribute("loginMember") Member loginMember,
+			RedirectAttributes ra
+			) {
+		
+		// 로그인한 회원 번호 얻어오기
+		int memberNo = loginMember.getMemberNo();
+		
+		// 현재 + 새 + 회원번호를 서비스로 전달
+		int result = service.changePw(paramMap, memberNo);
+		
+		// 분기처리
+		String path = null;
+		String message = null;
+		
+		if(result > 0) {
+			path = "/myPage/info";
+			message = "비밀번호가 변경 되었습니다.";
+		} else {
+			path = "/myPage/changePw";
+			message = "현재 비밀번호가 일치하지 않습니다.";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:" + path;
+	}
+
+	/** 회원 탈퇴
+	 * @param memberPw : 입력 받은 비밀번호
+	 * @param loginMember : 로그인한 회원 정보(세션)
+	 * @param status : 세션 완료 용도의 객체
+	 * 			-> @SessionAttributes 로 등록된 세션을 완료시킬 거
+	 * @param ra
+	 * @return
+	 */
+	@PostMapping("secession")
+	public String secession(
+			@RequestParam("memberPw") String memberPw,
+			@SessionAttribute("loginMember") Member loginMember,
+			SessionStatus status,
+			RedirectAttributes ra
+			) {
+		
+		// session scope 에 있는 loginMember 를 지워줘야함
+		// SessionStatus 이용 등록된 세션 완료
+		
+		// 서비스 호출
+		int memberNo = loginMember.getMemberNo();
+		
+		int result = service.secession(memberPw, memberNo);
+		
+		String message = null;
+		String path = null;
+		
+		if(result > 0) {
+			// 탈퇴 성공시
+			message = "탈퇴 되었습니다.";
+			path = "/";
+			
+			// loginMember 세션 만료
+			status.setComplete(); // 세션 완료 시킴
+			
+		} else {
+			// 탈퇴 실패시
+			message = "비밀번호가 일치하지 않습니다.";
+			path = "secession";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:" + path;
+	}
 }
