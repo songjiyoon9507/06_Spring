@@ -1,3 +1,34 @@
+/* 다음 주소 API 활용 */
+function execDaumPostcode() {
+    new daum.Postcode({
+        oncomplete: function(data) {
+            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+            // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+            // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+            var addr = ''; // 주소 변수
+
+            //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+            if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                addr = data.roadAddress;
+            } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                addr = data.jibunAddress;
+            }
+
+            // 우편번호와 주소 정보를 해당 필드에 넣는다.
+            document.getElementById('postcode').value = data.zonecode;
+            document.getElementById('address').value = addr;
+            // 커서를 상세주소 필드로 이동한다.
+            document.getElementById('detailAddress').focus();
+        }
+    }).open();
+}
+
+// 주소 검색 버튼 클릭 시
+document.querySelector("#searchAddress").addEventListener("click", execDaumPostcode);
+
+// ---------------------------------------------------
+
 // console.log("signup.js")
 
 // ===== 회원 가입 유효성 검사 =====
@@ -133,7 +164,7 @@ sendAuthKeyBtn.addEventListener("click", () => {
 
     // 중복되지 않은 유효한 이메일을 입력한 경우가 아닐 때
     if(!checkObj.memberEmail) {
-        alert("유효한 이메일 작성 후 클랙해 주세요");
+        alert("유효한 이메일 작성 후 클릭해 주세요");
         return;
     }
 
@@ -340,4 +371,146 @@ memberPwConfirm.addEventListener("input", () => {
 
     // memberPw 가 유효하지 않은 경우는 memberPwConfirm 검사 X
     checkObj.memberPwConfirm = false;
+});
+
+/* 닉네임 유효성 검사 */
+const memberNickname = document.querySelector("#memberNickname");
+const nickMessage = document.querySelector("#nickMessage");
+
+memberNickname.addEventListener("input", e => {
+
+    const inputNickname = e.target.value;
+
+    // 1) 입력 안한 경우
+    if(inputNickname.trim().length === 0) {
+        nickMessage.innerText = "한글, 영어, 숫자로만 2~10글자";
+        nickMessage.classList.remove('error', 'confirm');
+        checkObj.memberNickname = false;
+        memberNickname.value = "";
+        return;
+    }
+
+    // 2) 정규식 검사
+    const regExp = /^[가-힣\w\d]{2,10}$/;
+
+    // 정규식 검사 유효하지 않을 때
+    if(!regExp.test(inputNickname)) {
+        nickMessage.innerText = "닉네임이 유효하지 않습니다.";
+        nickMessage.classList.add("error");
+        nickMessage.classList.remove("confirm");
+        checkObj.memberNickname = false;
+        return;
+    }
+
+    // 3) 중복 검사(유효한 경우)
+    fetch("/member/checkNickname?memberNickname=" + inputNickname)
+    .then(resp => resp.text())
+    .then(count => {
+
+        // 중복 되는 경우
+        if(count == 1) {
+            nickMessage.innerText = "이미 사용중인 닉네임입니다.";
+            nickMessage.classList.add('error');
+            nickMessage.classList.remove('confirm');
+            checkObj.memberNickname = false;
+            return;
+        }
+
+        // 중복 아닐 때
+        nickMessage.innerText = "사용 가능한 닉네임입니다.";
+        nickMessage.classList.add('confirm');
+        nickMessage.classList.remove('error');
+        checkObj.memberNickname = true;
+    })
+    .catch(err => console.log(err));
+});
+
+// ----------------------------------------------------------
+
+// 휴대폰 번호 정규 표현식
+
+/* 전화번호(휴대폰번호) 유효성 검사 */
+const memberTel = document.querySelector("#memberTel");
+const telMessage = document.querySelector("#telMessage");
+
+memberTel.addEventListener("input", e => {
+
+    const inputMemberTel = e.target.value;
+
+    // 입력 안한 경우
+    if(inputMemberTel.trim().length === 0) {
+        telMessage.innerText = "전화번호를 입력해주세요.(- 제외)";
+        telMessage.classList.remove("error", "confirm");
+        checkObj.memberTel = false;
+        memberTel.value = "";
+        return;
+    }
+
+    // 정규식 검사
+    const regExp = /^01[0-9]{1}[0-9]{3,4}[0-9]{4}$/;
+
+    if(!regExp.test(inputMemberTel)) { // 유효하지 않을 때
+        telMessage.innerText = "유효하지 않은 전화번호 형식입니다.";
+        telMessage.classList.add('error');
+        telMessage.classList.remove('confirm');
+        checkObj.memberTel = false;
+        return;
+    }
+
+    // 유효할 때
+    telMessage.innerText = "유효한 전화번호 형식입니다.";
+    telMessage.classList.add('confirm');
+    telMessage.classList.remove('error');
+    checkObj.memberTel = true;
+    
+    console.log(checkObj);
+});
+
+// -----------------------------------------------------
+
+// 회원 가입 버튼 클릭 시 전체 유효성 검사 여부 확인
+
+const signUpForm = document.querySelector("#signUpForm");
+
+// 회원 가입 폼 제출 시
+signUpForm.addEventListener("submit", e => {
+
+    // checkObj의 저장된 값(value) 중
+    // 하나라도 false 가 있으면 제출 X
+
+    // for ~ in (객체 전용 향상된 for 문)
+    for(let key in checkObj) { // checkObj 요소의 key 값을 순서대로 꺼내옴
+
+        if(!checkObj[key]) {
+            // false 인 경우 (유효성 검사 통과 못한 경우)
+            let str; // 출력할 메세지를 저장할 변수
+
+            switch(key) {
+                case "memberEmail" :
+                    str = "이메일이 유효하지 않습니다."; break;
+                    
+                case "authKey" :
+                    str = "이메일이 인증되지 않았습니다."; break;
+
+                case "memberPw" :
+                    str = "비밀번호가 유효하지 않습니다."; break;
+                
+                case "memberPwConfirm" :
+                    str = "비밀번호가 일치하지 않습니다."; break;
+
+                case "memberNickname" :
+                    str = "닉네임이 유효하지 않습니다."; break;
+
+                case "memberTel" :
+                    str = "전화번호가 유효하지 않습니다."; break;
+            }
+
+            alert(str);
+
+            document.getElementById(key).focus(); // 초점 이동
+
+            e.preventDefault(); // form 태그 기본 이벤트(제출) 막기
+            return;
+        }
+    }
 });
