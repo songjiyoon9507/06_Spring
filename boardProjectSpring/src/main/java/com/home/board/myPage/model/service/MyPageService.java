@@ -58,4 +58,11 @@ public interface MyPageService {
 	 */
 	int fileUpload3(List<MultipartFile> aaaList, List<MultipartFile> bbbList, int memberNo) throws Exception;
 
+	/** 프로필 이미지 변경
+	 * @param profileImg
+	 * @param loginMember
+	 * @return result
+	 */
+	int profile(MultipartFile profileImg, Member loginMember) throws Exception;
+
 }

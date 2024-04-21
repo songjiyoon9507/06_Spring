@@ -338,4 +338,32 @@ public class MyPageController {
 		
 		return "redirect:/myPage/fileTest";
 	}
+	
+	/** 프로필 이미지 변경
+	 * @param profileImg
+	 * @param loginMember
+	 * @param ra
+	 * @return
+	 */
+	@PostMapping("profile")
+	public String profile(
+			@RequestParam("profileImg") MultipartFile profileImg,
+			@SessionAttribute("loginMember") Member loginMember,
+			RedirectAttributes ra
+			) throws Exception {
+		
+		// 서비스 호출
+		// /myPage/profile/변경된파일명.확장자 형태의 문자열
+		// 현재 로그인한 회원의 PROFILE_IMG 컬럼값으로 수정(UPDATE)
+		int result = service.profile(profileImg, loginMember);
+		
+		String message = null;
+		
+		if(result > 0) message = "변경 성공";
+		else message = "변경 실패";
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:profile"; // 리다이렉트 - /myPage/profile (상대경로)
+	}
 }
