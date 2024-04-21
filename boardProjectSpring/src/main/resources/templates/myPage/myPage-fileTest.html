@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -50,12 +50,38 @@
           * text/plain
            - 텍스트로 서버에 제출
 
-
         </pre>
 
-     	
-        
+        <form action="/myPage/file/test1"
+          method="POST"
+          enctype="multipart/form-data"
+        >
+          <h3>업로드 테스트 1</h3>
+          <!-- type="file" 도 결국에는 Parameter
+              -> @RequestParam으로 처리 가능
+          -->
+          <input type="file" name="uploadFile" multiple>
 
+          <button class="myPage-submit">제출하기</button>
+        </form>
+     	
+        <!-- a 태그의 download 속성
+          - href 속성에 작성된 요청에 대한 응답을 다운로드함
+        -->
+        <a th:if="${path != null}"
+          th:text="${path}"
+          th:href="${path}"
+          download>업로드한 파일</a>
+
+      <!-- 제출하기 하면 업로드됨 C:/uploadFiles/test/a.jpg
+        클라이언트가 /myPage/file/a.jpg 로 요청을 하면
+        path == /myPage/file/a.jpg
+        클라이언트가 path 를 요청하면 서버는 C:/uploadFiles/test/a.jpg
+        이걸 얻어다 준다는 설정이 따로 필요함
+        FileConfig 에서 설정해주면 됨
+      -->
+
+      <img th:src="${path}">
 
       </section>
 
