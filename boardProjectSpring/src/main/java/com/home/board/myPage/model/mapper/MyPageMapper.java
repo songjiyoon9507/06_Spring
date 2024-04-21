@@ -1,10 +1,12 @@
 package com.home.board.myPage.model.mapper;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import com.home.board.member.model.dto.Member;
+import com.home.board.myPage.model.dto.UploadFile;
 
 @Mapper
 public interface MyPageMapper {
@@ -32,5 +34,16 @@ public interface MyPageMapper {
 	 * @return result
 	 */
 	int secession(int memberNo);
+
+	/** 파일 정보를 DB에 삽입
+	 * @param uf
+	 * @return result
+	 */
+	int insertUploadFile(UploadFile uf);
+
+	/** 파일 목록 조회
+	 * @return list
+	 */
+	List<UploadFile> fileList();
 
 }

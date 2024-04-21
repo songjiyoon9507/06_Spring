@@ -1,10 +1,13 @@
 package com.home.board.myPage.model.service;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import com.home.board.member.model.dto.Member;
+import com.home.board.myPage.model.dto.UploadFile;
 
 public interface MyPageService {
 
@@ -34,5 +37,25 @@ public interface MyPageService {
 	 * @return path
 	 */
 	String fileUpload1(MultipartFile uploadFile) throws Exception;
+
+	/** 파일 업로드 + DB 저장 + 조회
+	 * @param uploadFile
+	 * @param memberNo
+	 * @return result
+	 */
+	int fileUpload2(MultipartFile uploadFile, int memberNo) throws IOException;
+
+	/** 파일 목록 조회
+	 * @return list
+	 */
+	List<UploadFile> fileList();
+
+	/** 여러 파일 업로드
+	 * @param aaaList
+	 * @param bbbList
+	 * @param memberNo
+	 * @return result
+	 */
+	int fileUpload3(List<MultipartFile> aaaList, List<MultipartFile> bbbList, int memberNo) throws Exception;
 
 }

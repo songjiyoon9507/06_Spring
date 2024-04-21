@@ -1,6 +1,8 @@
 package com.home.board.myPage.model.service;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -8,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.home.board.common.util.Utility;
 import com.home.board.member.model.dto.Member;
+import com.home.board.myPage.model.dto.UploadFile;
 import com.home.board.myPage.model.mapper.MyPageMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -111,5 +115,123 @@ public class MyPageServiceImpl implements MyPageService {
 		// 웹 접근 주소 : /myPage/file/a.jpg
 		
 		return "/myPage/file/" + uploadFile.getOriginalFilename();
+	}
+
+	// 파일 업로드 TEST 2 파일 업로드 + DB 저장 + 조회
+	@Override
+	public int fileUpload2(MultipartFile uploadFile, int memberNo) throws IOException {
+		
+		// 업로드된 파일이 있는지 없는지 먼저 따져줄 거임
+		// 선택된 파일이 없는 경우
+		if(uploadFile.isEmpty()) {
+			return 0; // DB 에 삽입된 게 없다
+		}
+		
+		/* DB 에 BLOB
+		 * DB 에 파일 저장이 가능하지만
+		 * DB 부하를 줄이기 위해
+		 * 
+		 * DB에는 서버에 저장할 파일 경로를 저장함
+		 * DB 삽입/수정 성공 후 서버에 파일을 저장
+		 * 만약에 파일 저장 실패 시
+		 * -> 예외 발생
+		 * -> @Transactional 을 이용해서 rollback 수행
+		 * */
+		
+		// 선택된 파일이 있을 경우
+		// 1. 서버에 저장할 파일 경로 만들기
+
+		// 파일이 저장될 서버 폴더 경로
+		String folderPath = "C:\\uploadFiles\\test\\";
+		
+		// 클라이언트가 파일이 저장된 폴더에 접근할 수 있도록 해주는 주소
+		String webPath = "/myPage/file/";
+		
+		// 위 둘은 registry 로 연결 FileConfig
+		
+		// 2. DB에 전달할 데이터를 DTO 로 묶어서 INSERT 호출하기
+		// webPath, memberNo, 원본파일명, 변경된 파일명
+		// Utility 클래스 프로그램 전체적으로 사용될 유용한 기능 모음 클래스
+		String fileRename = Utility.fileRename(uploadFile.getOriginalFilename());
+		
+		// DTO 클래스 생성
+		// Builder 패턴을 이용해서 UploadFile 객체 생성
+		// 장점 1) 반복되는 참조변수명, set 구문 생략
+		// 장점 2) method chaining 을 이용해서 한줄로 작성 가능
+		UploadFile uf = UploadFile.builder()
+						.memberNo(memberNo)
+						.filePath(webPath)
+						.fileOriginalName(uploadFile.getOriginalFilename())
+						.fileRename(fileRename)
+						.build();
+		
+		int result = mapper.insertUploadFile(uf);
+		
+		// 3. 삽입(INSERT) 성공 시 파일을 지정된 서버 폴더에 저장
+		
+		// 삽입 실패 시
+		if(result == 0) return 0;
+		
+		// 삽입 성공 시
+		
+		// C:\\uploadFiles\\test\\변경된파일명 으로
+		// 파일을 서버 컴퓨터에 저장
+		
+		uploadFile.transferTo(new File(folderPath + fileRename));
+		// C:\\uploadFiles\\test\\20240421150314_00004.jpg
+		
+		// File 사용 시 IOException 발생
+		// => CheckException
+		
+		// @Transactional 은 RuntimeException만 처리 => UncheckedException
+		// @Transactional 이렇게만 작성하면 IOException 못 잡아줌
+		// => rollbackFor 속성 이용해서 롤백할 예외 범위 수정해줘야함
+		
+		return result;
+	}
+
+	// 파일 목록 조회
+	@Override
+	public List<UploadFile> fileList() {
+		return mapper.fileList();
+	}
+
+	// 여러 파일 업로드
+	@Override
+	public int fileUpload3(List<MultipartFile> aaaList, List<MultipartFile> bbbList, int memberNo) throws Exception {
+
+		// 1. aaaList 처리
+		int result1 = 0;
+		
+		// 업로드된 파일이 없을 경우를 제외하고 업로드
+		for(MultipartFile file : aaaList) {
+			
+			if(file.isEmpty()) {
+				continue;
+				// 현재 접근한 파일이 isEmpty 면 다음 파일로 넘어가겠다.
+			}
+			
+			// fileUpload2() 메서드 호출 (재활용)
+			// -> 파일 하나 업로드 + DB INSERT
+			result1 += fileUpload2(file, memberNo);
+		}
+		
+		// 2. bbbList 처리
+		int result2 = 0;
+		
+		// 업로드된 파일이 없을 경우를 제외하고 업로드
+		for(MultipartFile file : bbbList) {
+			
+			if(file.isEmpty()) {
+				continue;
+				// 현재 접근한 파일이 isEmpty 면 다음 파일로 넘어가겠다.
+			}
+			
+			// fileUpload2() 메서드 호출 (재활용)
+			// -> 파일 하나 업로드 + DB INSERT
+			result2 += fileUpload2(file, memberNo);
+		}		
+		
+		return result1 + result2;
 	}
 }

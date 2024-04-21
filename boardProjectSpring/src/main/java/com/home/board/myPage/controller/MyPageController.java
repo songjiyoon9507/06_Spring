@@ -1,5 +1,6 @@
 package com.home.board.myPage.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.home.board.member.model.dto.Member;
+import com.home.board.myPage.model.dto.UploadFile;
 import com.home.board.myPage.model.service.MyPageService;
 
 import lombok.RequiredArgsConstructor;
@@ -237,7 +239,7 @@ public class MyPageController {
 	 *   파일         -> MultipartFile
 	 * */
 	
-	/**
+	/** 파일 저장 TEST
 	 * @param uploadFile : 업로드한 파일 + 파일에 대한 내용 및 설정 내용
 	 * @return
 	 */
@@ -253,6 +255,86 @@ public class MyPageController {
 		if(path != null) {
 			ra.addFlashAttribute("path", path);
 		}
+		
+		return "redirect:/myPage/fileTest";
+	}
+	
+	/** 파일 업로드 + DB 저장 + 조회
+	 * @return
+	 */
+	@PostMapping("file/test2")
+	public String fileUpload2(
+			@RequestParam("uploadFile") MultipartFile uploadFile,
+			@SessionAttribute("loginMember") Member loginMember,
+			RedirectAttributes ra) throws Exception {
+		
+		// 로그인한 회원의 번호 (누가 업로드 했는가)
+		int memberNo = loginMember.getMemberNo();
+		
+		// 업로드된 파일 정보를 DB에 INSERT 후 결과 행의 개수 반환 받을 예정
+		int result = service.fileUpload2(uploadFile, memberNo);
+		
+		// 분기 처리
+		String message = null;
+		
+		if(result > 0) {
+			message = "파일 업로드 성공";
+		} else {
+			message = "파일 업로드 실패";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:/myPage/fileTest";
+	}
+	
+	/** 파일 목록 조회
+	 * @param model
+	 * @return /myPage/myPage-fileList
+	 */
+	@GetMapping("fileList")
+	public String fileList(Model model) {
+		
+		// 파일 목록 조회 서비스 호출
+		List<UploadFile> list = service.fileList();
+		
+		// model 에 list 담기
+		model.addAttribute("list",list);
+		
+		// model list 담아서 /myPage/myPage-fileList 여기로 보내줄 거임
+		return "myPage/myPage-fileList";
+	}
+	
+	// 여러 파일 업로드
+	@PostMapping("file/test3")
+	public String fileUpload3(
+			@RequestParam("aaa") List<MultipartFile> aaaList,
+			@RequestParam("bbb") List<MultipartFile> bbbList,
+			@SessionAttribute("loginMember") Member loginMember,
+			RedirectAttributes ra
+			) throws Exception {
+		
+		// aaa 파일 미제출 시 (input 창이 두개)
+		// -> 0번, 1번 인덱스 파일이 모두 비어있음
+		
+		// bbb (multiple) 파일 미제출 시
+		// -> 0번 인덱스 파일이 비어있음
+		
+		int memberNo = loginMember.getMemberNo();
+		
+		// result == 업로드한 파일 개수
+		int result = service.fileUpload3(aaaList, bbbList, memberNo);
+		
+		// 분기 처리
+		String message = null;
+		
+		if(result == 0) {
+			message = "업로드된 파일이 없습니다.";
+		} else {
+			message = result + "개의 파일이 업로드 되었습니다.";
+		}
+		
+		ra.addFlashAttribute("message", message);
 		
 		return "redirect:/myPage/fileTest";
 	}
