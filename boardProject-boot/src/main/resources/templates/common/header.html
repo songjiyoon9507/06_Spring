@@ -46,7 +46,7 @@
   <!-- navigator -->
   <nav>
     <ul>
-      <li>
+      <!-- <li>
         <a href="#">공지사항</a>
       </li>
       <li>
@@ -54,6 +54,16 @@
       </li>
       <li>
         <a href="#">질문 게시판</a>
-      </li>
+      </li> -->
+      <!-- 게시판 목록도 DB 에 저장해뒀다가 보여줌 -->
+      <!-- 늘어날 때마다 치는 게 아님 -->
+      <!-- interceptor 이용해서 보여줄거임 -->
+
+      <th:block th:each="boardType : ${application.boardTypeList}">
+        <li>
+          <a th:text="${boardType.boardName}"
+          th:href="@{/board/{boardCode}(boardCode=${boardType.boardCode})}">게시판 이름</a>
+        </li>
+      </th:block>
     </ul>
   </nav>
