@@ -5,7 +5,10 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>게시판 이름</title>
+	<th:block th:each="boardType : ${application.boardTypeList}">
+		<title th:if="${boardType.boardCode} == ${boardCode}"
+		th:text="${boardType.boardName}">게시판 이름</title>
+	</th:block>
 
 	<th:block th:replace="~{common/common}"></th:block>
 
@@ -64,7 +67,9 @@
 								<td>
 									<!-- 썸네일 추가 예정 -->
 	
-									<a th:text="*{boardTitle}">게시글 제목</a>
+									<!-- 상세 조회 주소에 cp가 포함된 이유 : 상세 -> 목록으로 돌아올 때 사용 -->
+									<a th:text="*{boardTitle}"
+									th:href="@{/board/{boardCode}/{boardNo}(boardCode=${boardCode}, boardNo=*{boardNo}, cp=${pagination.currentPage})}">게시글 제목</a>
 	
 									<th:block th:text="|[*{commentCount}]|">댓글 수</th:block>
 								</td>

@@ -1,5 +1,7 @@
 package edu.kh.project.board.model.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,8 +41,9 @@ public class Board {
 	// 게시글 목록 썸네일 이미지
 	private String thumbnail;
 	
-	// ----- 추가 예정 -----
-	// 특정 게시글 이미지 목록
+	// 특정 게시글 이미지 목록 (xml collection property와 똑같이)
+	private List<BoardImg> imageList;
 	
 	// 특정 게시글에 작성된 댓글 목록
+	private List<Comment> commentList;
 }
