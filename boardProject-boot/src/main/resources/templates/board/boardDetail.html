@@ -44,7 +44,8 @@
                         
                         <!-- 비동기로 좋아요 누를 때 동작 (4/22 월요일 예정) -->
                         <!-- 좋아요 누른적이 있으면 fa-solid, 없으면 fa-regular 클래스 추가 -->
-                        <i class="fa-heart fa-regular" id="boardLike"></i>
+                        <i class="fa-heart" id="boardLike"
+                            th:classappend="*{likeCheck == 1} ? fa-solid : fa-regular"></i>
 
                         <!-- 좋아요 개수 -->
                         <span th:text="*{likeCount}">0</span>

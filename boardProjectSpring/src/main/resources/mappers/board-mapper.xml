@@ -2,6 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.home.board.board.model.mapper.BoardMapper">
 
+	<resultMap type="Board" id="board_rm">
+	
+		<id property="boardNo" column="BOARD_NO"/>
+		
+		<collection
+			property="imageList"
+			select="selectImageList"
+			column="BOARD_NO"
+			javaType="java.util.ArrayList"
+			ofType="BoardImg"/>
+			
+		<collection 
+			property="commentList"
+			select="selectCommentList"
+			column="BOARD_NO"
+			javaType="java.util.ArrayList"
+			ofType="Comment" />
+			
+	</resultMap>
+
 	<!-- 게시판 종류 조회 -->
 	<select id="selectBoardTypeList">
 		SELECT BOARD_CODE "boardCode", BOARD_NAME "boardName"
@@ -50,5 +70,49 @@
 		ORDER BY BOARD_NO DESC
 	</select>
 	
+	<!-- 게시글 상세 조회 -->
+	<select id="selectOne" resultMap="board_rm">
+		SELECT BOARD_NO, BOARD_TITLE, BOARD_CONTENT, BOARD_CODE, READ_COUNT,
+			MEMBER_NO, MEMBER_NICKNAME, PROFILE_IMG,
+			TO_CHAR(BOARD_WRITE_DATE, 'YYYY"년" MM"월" DD"일" HH24:MI:SS') BOARD_WRITE_DATE, 
+			TO_CHAR(BOARD_UPDATE_DATE, 'YYYY"년" MM"월" DD"일" HH24:MI:SS') BOARD_UPDATE_DATE,
+			(SELECT COUNT(*)
+			 FROM "BOARD_LIKE"
+			 WHERE BOARD_NO = #{boardNo}) LIKE_COUNT,
+			(SELECT IMG_PATH || IMG_RENAME
+			 FROM "BOARD_IMG"
+			 WHERE BOARD_NO = #{boardNo}
+			 AND   IMG_ORDER = 0) THUMBNAIL
+		FROM "BOARD"
+		JOIN "MEMBER" USING(MEMBER_NO)
+		WHERE BOARD_DEL_FL = 'N'
+		AND BOARD_CODE = #{boardCode}
+		AND BOARD_NO = #{boardNo}
+	</select>
 	
+	<!-- 상세 조회한 게시글의 이미지 목록 조회 (resultType 꼭 써줘야함) -->
+	<select id="selectImageList" resultType="BoardImg">
+		SELECT *
+		FROM "BOARD_IMG"
+		WHERE BOARD_NO = #{boardNo}
+		ORDER BY IMG_ORDER
+	</select>
+	
+	<!-- 상세 조회한 게시글의 댓글 목록 조회 -->
+	<select id="selectCommentList" resultType="Comment">
+		SELECT LEVEL, C.* FROM
+			(SELECT COMMENT_NO, COMMENT_CONTENT,
+			    TO_CHAR(COMMENT_WRITE_DATE, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') COMMENT_WRITE_DATE,
+			    BOARD_NO, MEMBER_NO, MEMBER_NICKNAME, PROFILE_IMG, PARENT_COMMENT_NO, COMMENT_DEL_FL
+			FROM "COMMENT"
+			JOIN MEMBER USING(MEMBER_NO)
+			WHERE BOARD_NO = #{boardNo}) C
+		WHERE COMMENT_DEL_FL = 'N'
+		OR 0 != (SELECT COUNT(*) FROM "COMMENT" SUB
+						WHERE SUB.PARENT_COMMENT_NO = C.COMMENT_NO
+						AND COMMENT_DEL_FL = 'N')
+		START WITH PARENT_COMMENT_NO IS NULL
+		CONNECT BY PRIOR COMMENT_NO = PARENT_COMMENT_NO
+		ORDER SIBLINGS BY COMMENT_NO
+	</select>
 </mapper>
