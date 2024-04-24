@@ -19,4 +19,14 @@ public interface BoardMapper {
 
 	Board selectOne(Map<String, Integer> map);
 
+	int deleteBoardLike(Map<String, Integer> map);
+
+	int insertBoardLike(Map<String, Integer> map);
+
+	int selectLikeCount(Integer integer);
+
+	int updateReadCount(int boardNo);
+
+	int selectReadCount(int boardNo);
+
 }
