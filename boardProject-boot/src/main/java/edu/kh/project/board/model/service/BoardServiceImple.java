@@ -20,7 +20,7 @@ public class BoardServiceImple implements BoardService {
 
 	private final BoardMapper mapper;
 
-	// 게시판 종류 조회
+	// 게시판 종류 조회(전처리)
 	@Override
 	public List<Map<String, Object>> selectBoardTypeList() {
 		return mapper.selectBoardTypeList();
