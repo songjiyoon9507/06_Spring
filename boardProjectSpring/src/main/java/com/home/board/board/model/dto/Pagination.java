@@ -115,7 +115,7 @@ public class Pagination {
 		if(endPage == maxPage) {
 			nextPage = maxPage;
 		} else {
-			nextPage = nextPage + 1;
+			nextPage = endPage + 1;
 		}
 	}
 }

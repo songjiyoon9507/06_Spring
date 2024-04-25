@@ -155,9 +155,6 @@ public class MemberController {
 		int result = service.checkNickname(memberNickname);
 		
 		log.debug("result ={}", result);
-		log.debug("result ={}", result);
-		log.debug("result ={}", result);
-		log.debug("result ={}", result);
 		
 		return result;
 	}

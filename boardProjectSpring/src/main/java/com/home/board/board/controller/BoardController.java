@@ -190,4 +190,5 @@ public class BoardController {
 	public int boardLike(@RequestBody Map<String, Integer> map) {
 		return service.boardLike(map);
 	}
+
 }
