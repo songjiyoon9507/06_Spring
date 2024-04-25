@@ -45,6 +45,18 @@ public class EditBoardController {
 		// name 이 같은 값일 때는 배열이나 List 로 받아옴
 		// MultipartFile 가져올 때는 List 형태가 적절하기 때문에 List로 받아온 것
 		
+		// inputBoard 안에는 boardTitle, boardContent 담아옴
+		// 여기에 boardCode 와 loginMember 에 있는 memberNo setting
+		inputBoard.setBoardCode(boardCode);
+		inputBoard.setMemberNo(loginMember.getMemberNo());
+		
+		// Board 테이블 과 boardImg 는 다른 테이블이라서 서비스 insert 2번 해야함
+		// boardImg가 board 의 pk 를 foreign key 로 삼음 (boardNo)
+		// board 테이블 insert 후 생성된 시퀀스 넘버가 boardNo 인데
+		// 그 값을 boardImg insert 할 때 써야함
+		// boardNo 로 돌려받는 이유는 insert 후 바로 상세 조회 페이지 보여주기 위해서
+		int boardNo = service.boardInsert(inputBoard, images);
+		
 		
 		return "";
 	}
