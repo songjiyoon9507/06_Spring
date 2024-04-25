@@ -3,8 +3,6 @@ const previewList = document.querySelectorAll(".preview"); // img 태그 5개
 const inputImageList = document.querySelectorAll(".inputImage"); // input 태그 5개
 const deleteImageList = document.querySelectorAll(".delete-image"); // x버튼 5개
 
-
-
 // 이미지 선택 이후 취소를 누를 경우를 대비한 백업 이미지
 // (백업 원리 -> 복제품으로 기존 요소를 대체함)
 const backupInputList = new Array(inputImageList.length);
@@ -18,11 +16,11 @@ const backupInputList = new Array(inputImageList.length);
 const changeImageFn = (inputImage, order) => {
 
   // byte단위로 10MB 지정
-  const maxSzie = 1024 * 1024 * 10;
+  const maxSize = 1024 * 1024 * 10;
 
   // 업로드된 파일 정보가 담긴 객체를 얻어와 변수에 저장
   const file = inputImage.files[0];
-
+  console.log(file);
 
   // ------------- 파일 선택 -> 취소 해서 파일이 없는 경우 ----------------
   if(file == undefined){
@@ -50,7 +48,7 @@ const changeImageFn = (inputImage, order) => {
 
   // ---------- 선택된 파일의 크기가 최대 크기(maxSize) 초과 ---------
 
-  if(file.size > maxSzie){
+  if(file.size > maxSize){
     alert("10MB 이하의 이미지를 선택해주세요");
 
     // 해당 순서의 backup 요소가 없거나, 

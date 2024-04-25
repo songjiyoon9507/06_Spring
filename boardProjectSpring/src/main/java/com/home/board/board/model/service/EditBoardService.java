@@ -1,5 +1,6 @@
 package com.home.board.board.model.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +14,6 @@ public interface EditBoardService {
 	 * @param images
 	 * @return boardNo
 	 */
-	int boardInsert(Board inputBoard, List<MultipartFile> images);
+	int boardInsert(Board inputBoard, List<MultipartFile> images) throws IllegalStateException, IOException;
 
 }

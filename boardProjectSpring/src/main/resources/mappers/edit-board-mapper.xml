@@ -4,7 +4,7 @@
 
 	<!-- 게시글 작성 -->
 	<insert id="boardInsert" useGeneratedKeys="true" parameterType="Board">
-	
+
 		<selectKey order="BEFORE" resultType="_int" keyProperty="boardNo">
 			SELECT SEQ_BOARD_NO.NEXTVAL FROM DUAL
 		</selectKey>
@@ -18,4 +18,23 @@
 				#{memberNo}
 		)
 	</insert>
+	
+	<!-- 게시글 이미지 모두 삽입 -->
+	<insert id="insertUploadList" parameterType="list">
+		INSERT INTO BOARD_IMG
+		
+		<foreach collection="list" item="img"
+			open="(" close=")" separator=" UNION ">
+			SELECT NEXT_IMG_NO(),
+			#{img.imgPath},
+			#{img.imgOriginalName},
+			#{img.imgRename},
+			#{img.imgOrder},
+			#{img.boardNo}
+			FROM DUAL
+		</foreach>
+		
+	</insert>
+	
 </mapper>
+

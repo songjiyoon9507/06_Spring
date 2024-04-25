@@ -1,8 +1,11 @@
 package com.home.board.board.model.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.home.board.board.model.dto.Board;
+import com.home.board.board.model.dto.BoardImg;
 
 @Mapper
 public interface EditBoardMapper {
@@ -12,5 +15,11 @@ public interface EditBoardMapper {
 	 * @return result
 	 */
 	int boardInsert(Board inputBoard);
+
+	/** 게시글 이미지 모두 삽입
+	 * @param uploadList
+	 * @return result
+	 */
+	int insertUploadList(List<BoardImg> uploadList);
 
 }

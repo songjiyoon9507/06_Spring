@@ -1,5 +1,6 @@
 package com.home.board.board.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -37,7 +38,7 @@ public class EditBoardController {
 			@ModelAttribute Board inputBoard,
 			@SessionAttribute("loginMember") Member loginMember,
 			@RequestParam("images") List<MultipartFile> images,
-			RedirectAttributes ra) {
+			RedirectAttributes ra) throws IllegalStateException, IOException {
 		
 		// @RequestParam 으로 같은 name 속성 값 가진 애들을 가져올 때
 		// 배열, List , Map 으로 다 가져올 수 있음
@@ -57,7 +58,19 @@ public class EditBoardController {
 		// boardNo 로 돌려받는 이유는 insert 후 바로 상세 조회 페이지 보여주기 위해서
 		int boardNo = service.boardInsert(inputBoard, images);
 		
+		String path = null;
+		String message = null;
 		
-		return "";
+		if(boardNo > 0) {
+			path = "/board/" + boardCode + "/" + boardNo; // 상세 조회 /board/1/2000
+			message = "게시글이 작성 되었습니다.";
+		} else {
+			path = "insert";
+			message = "게시글 작성 실패";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:" + path;
 	}
 }
