@@ -14,12 +14,15 @@
     <main>
         <th:block th:replace="~{common/header}"></th:block>
 
+        <!-- 현재 : /editBoard/1/2005/update?cp=1 -->
+        <!-- 상대경로로 요청한 주소 (목표 경로) : /editBoard/1/2005/update?cp=1 POST 요청 -->
         <form th:action="@{update}" th:object="${board}" method="POST" 
             class="board-write" id="boardUpdateFrm" enctype="multipart/form-data">  
 
             <!-- 제목 -->
             <h1 class="board-title">
-                <input type="text" name="boardTitle" placeholder="제목" th:value="${board.boardTitle}">   
+                <input type="text" name="boardTitle" placeholder="제목" th:value="${board.boardTitle}">
+                <!-- *{boardTitle}로 작성해도 됨 -->
             </h1>
 
 
@@ -98,6 +101,22 @@
 
     <th:block th:replace="~{common/footer}"></th:block>
 
+    <!-- 이미지 미리보기 설정 -->
+    <script th:inline="javascript">
+        const imageList = /*[[${board.imageList}]]*/ [];
+        const previewList = document.querySelectorAll('img.preview');
 
+        const orderList = []; // 기존에 존재하던 이미지 순서를 기록
+
+        for(let img of imageList) {
+            previewList[img.imgOrder].src = img.imgPath + img.imgRename;
+
+            orderList.push(img.imgOrder);
+            // 다섯개 이미지가 전부 다 있었다
+            // -> [0,1,2,3,4]
+        }
+    </script>
+
+    <script src="/js/board/boardUpdate.js"></script>
 </body>
 </html>
