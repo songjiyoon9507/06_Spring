@@ -177,7 +177,7 @@ public class BoardController {
 					// 다음 날 자정
 					LocalDateTime nextDayMidnight = now.plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
 				
-					// 다음 날 자정까지 남은 시간 계산 (초 단위)
+					// 다음 날 자정까지 남은 시간 계산 (초 단위) java.time import
 					long secondsUntilNextDay = Duration.between(now, nextDayMidnight).getSeconds();
 					
 					// 쿠키 수명 설정
