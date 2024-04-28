@@ -1,9 +1,12 @@
 package com.home.board.board.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.home.board.board.model.dto.Board;
+import com.home.board.board.model.service.BoardService;
 import com.home.board.board.model.service.EditBoardService;
 import com.home.board.member.model.dto.Member;
 
@@ -26,6 +30,8 @@ import lombok.RequiredArgsConstructor;
 public class EditBoardController {
 
 	private final EditBoardService service;
+	
+	private final BoardService boardService;
 	
 	@GetMapping("{boardCode:[0-9]+}/insert")
 	public String boardInsert(@PathVariable("boardCode") int boardCode) {
@@ -67,6 +73,72 @@ public class EditBoardController {
 		} else {
 			path = "insert";
 			message = "게시글 작성 실패";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:" + path;
+	}
+	
+	@GetMapping("{boardCode:[0-9]+}/{boardNo:[0-9]+}/update")
+	public String boardUpdate(@PathVariable("boardCode") int boardCode,
+			@PathVariable("boardNo") int boardNo,
+			@SessionAttribute("loginMember") Member loginMember,
+			Model model,
+			RedirectAttributes ra) {
+		
+		Map<String, Integer> map = new HashMap<>();
+		map.put("boardCode", boardCode);
+		map.put("boardNo", boardNo);
+		
+		Board board = boardService.selectOne(map);
+		
+		String message = null;
+		String path = null;
+		
+		if(board == null) {
+			message = "해당 게시글이 존재하지 않습니다.";
+			path = "redirect:/"; // 메인페이지 재요청
+			ra.addFlashAttribute("message", message);
+		} else if(board.getMemberNo() != loginMember.getMemberNo()) {
+			message = "자신이 작성한 글만 수정할 수 있습니다.";
+			path = String.format("redirect:/board/%d/%d", boardCode, boardNo);
+			ra.addFlashAttribute("message", message);
+		} else {
+			path = "board/boardUpdate";
+			model.addAttribute("board", board);
+		}
+		
+		return path;
+	}
+	
+	@PostMapping("{boardCode:[0-9]+}/{boardNo:[0-9]+}/update")
+	public String boardUpdate(@PathVariable("boardCode") int boardCode,
+			@PathVariable("boardNo") int boardNo,
+			@ModelAttribute Board inputBoard,
+			@SessionAttribute("loginMember") Member loginMember,
+			@RequestParam("images") List<MultipartFile> images,
+			RedirectAttributes ra,
+			@RequestParam(value="deleteOrder", required = false) String deleteOrder,
+			@RequestParam(value="queryString", required = false, defaultValue="") String queryString
+			) throws IllegalStateException, IOException {
+		
+		inputBoard.setBoardCode(boardCode);
+		inputBoard.setBoardNo(boardNo);
+		inputBoard.setMemberNo(loginMember.getMemberNo());
+		
+		int result = service.boardUpdate(inputBoard, images, deleteOrder);
+		
+		String message = null;
+		String path = null;
+		
+		if(result > 0) {
+			message = "게시글이 수정되었습니다.";
+			path = String.format("/board/%d/%d%s", boardCode, boardNo, queryString);
+			// 마지막 %d 뒤에는 슬래쉬 없음
+		} else {
+			message = "수정 실패";
+			path = "update"; // 수정 화면 전환 상태로 redirect하는 상대 경로
 		}
 		
 		ra.addFlashAttribute("message", message);
