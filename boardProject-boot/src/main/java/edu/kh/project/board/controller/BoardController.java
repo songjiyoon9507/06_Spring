@@ -35,9 +35,11 @@ public class BoardController {
 
 	private final BoardService service;
 	
-	/** 게시글 목록 조회
+	/** 게시글 목록 조회 + 검색
 	 * @param boardCode : 게시판 종류 구분 번호
 	 * @param cp : 현재 조회 요청한 페이지 (없으면 1) current page
+	 * @param paramMap : 제출된 파라미터가 모두 저장된 Map
+	 * 					 (검색 시 key, query 담겨있음)
 	 * @return
 	 * 
 	 * - /board/xxx
@@ -52,12 +54,25 @@ public class BoardController {
 	@GetMapping("{boardCode:[0-9]+}")
 	public String selectBoardList(@PathVariable("boardCode") int boardCode,
 			@RequestParam(value="cp", required=false, defaultValue = "1") int cp,
-			Model model) {
+			Model model,
+			@RequestParam Map<String, Object> paramMap
+			) {
 		
-		log.debug("boardCode : " + boardCode);
-		
-		// 조회 서비스 호출 후 결과 반환
-		Map<String, Object> map = service.selectBoardList(boardCode,cp);
+		// 조회 서비스 호출 후 결과 반환 (검색이 아닌 경우, 검색인 경우 나눠줄 거)
+		Map<String, Object> map = null;
+			
+		// 검색이 아닌 경우 (paramMap 이 {} 이렇게 나옴)
+		if(paramMap.get("key") == null) {
+			// 게시글 목록 조회 서비스 호출
+			map = service.selectBoardList(boardCode,cp);
+		} else {
+			// 검색인 경우 -> paramMap 은 {key=t, query=검색어}
+			// 검색 서비스 호출
+			// boardCode 를 paramMap 에 추가
+			paramMap.put("boardCode", boardCode);
+			// -> paramMap 은 {key=t, query=검색어, boardCode=1}
+			map = service.searchList(paramMap, cp);
+		}
 		
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("boardList"));

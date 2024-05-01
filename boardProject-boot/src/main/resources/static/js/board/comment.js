@@ -105,7 +105,7 @@ const selectCommentList = () => {
         const childCommentBtn = document.createElement("button");
         childCommentBtn.innerText = "답글";
 
-        // 답글 버튼에 onclick 이벤트 리스너 추가 
+        // 답글 버튼에 onclick 이벤트 리스너 추가
         childCommentBtn.setAttribute("onclick", 
           `showInsertComment(${comment.commentNo}, this)`);     
           
