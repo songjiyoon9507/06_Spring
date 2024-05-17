@@ -77,3 +77,15 @@ if(updateBtn != null) {
         // -> /editBoard/1/1990/update?cp=1
     });
 };
+
+// --------------------------------------------------------------------------------
+
+/* 목록으로 이동하기 */
+const goToListBtn = document.querySelector("#goToListBtn");
+
+goToListBtn.addEventListener("click", () => {
+
+    // 현재 경로 http://localhost/board/1/2000
+    // /board/all?cp=6
+    location.href = "/board" + location.search;
+});
