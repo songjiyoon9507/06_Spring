@@ -92,13 +92,3 @@ if(deleteBtn != null) {
 };
 
 // ---------------------------------------------------------------------------------
-
-/* 목록으로 버튼 클릭 시 */
-const goToListBtn = document.querySelector("#goToListBtn");
-
-goToListBtn.addEventListener("click", () => {
-
-    // 현재 경로 http://localhost/board/1/2000
-    // /board/all?cp=6
-    location.href = location.search;
-});
