@@ -20,6 +20,12 @@
     </section>
     <section>
         <!-- 검색할 부분 -->
+        <!-- 할 일 추가 하기 -->
+        <th:block th:if="${session.loginMember != null}">
+            <form>
+                <button>할 일 추가하기</button>
+            </form>
+        </th:block>
     </section>
 </body>
 </html>
