@@ -7,6 +7,7 @@
 </head>
 <body>
     할일 목록 보여줄 곳
+    <!-- sidebar 하위에 들어갈 것들 -->
     <section>
         <li>
             <a href="#">할 일 요청 목록</a>
@@ -22,10 +23,14 @@
         <!-- 검색할 부분 -->
         <!-- 할 일 추가 하기 -->
         <th:block th:if="${session.loginMember != null}">
-            <form>
-                <button>할 일 추가하기</button>
-            </form>
+            <button id="todo-add-btn">할 일 추가하기</button>
         </th:block>
     </section>
+
+    <script src="/js/todo/todoMain.js"></script>
+    
+    <script th:inline="javascript">
+        const loginMemberNo = /*[[${session.loginMember?.memberNo}]]*/ "로그인 회원 번호";
+    </script>
 </body>
 </html>
