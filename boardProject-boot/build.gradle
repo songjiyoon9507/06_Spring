@@ -38,6 +38,9 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
 	testImplementation 'org.springframework.security:spring-security-test'
+	
+	// Spring AOP + AspectJ
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
 }
 
 // testImplementation 'org.springframework.security:spring-security-test' 여기에서 기본으로 제공해주는 로그인 페이지가 보이는데

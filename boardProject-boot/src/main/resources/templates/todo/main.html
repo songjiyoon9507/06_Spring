@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
+<link>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo</title>
+
+    <link rel="stylesheet" href="/css/todo/todoMain.css">
 </head>
 <body>
     할일 목록 보여줄 곳
@@ -26,6 +28,61 @@
             <button id="todo-add-btn">할 일 추가하기</button>
         </th:block>
     </section>
+<!-- 
+    <div id="popupLayer" class="popup-hidden">
+		<div class="first-line"></div>
+        <div class="popup-row">
+            <span id="popupMessageNo" style="display: none;"></span>
+            <span id="popupClose">&times;</span>
+        </div>
+		
+        <div class="popup-row">
+			제목 : <input id="popupMessageTitle"></input>
+        </div>
+		
+        <div class="popup-row">
+            내용 :
+            <span id="popupMessageContent"></span>
+        </div>
+		
+		<div calss="popup-row" style="display: flex; align-items: center; font-size: 11px; margin-top: 10vh; margin-left: 10px; padding:10px;">
+			확인 여부 : &nbsp; <span id="popupCheck" style="color: coral;"></span> &nbsp; 			&nbsp;
+			등록일 : &nbsp;<span id="popupRegDate" style="color: coral;"></span>
+		</div>
+		
+        <div class="btn-container">
+            <button id="updateView">수정</button>
+            <button id="deleteBtn">삭제</button>
+        </div>
+		
+    </div> -->
+
+    <div id="updateLayer" class="popup-hidden">
+		<div class="first-line"></div>
+        <div class="popup-row">
+          제목 : <input type="text" id="updateTitle">
+        </div>
+
+        <div class="popup-row">
+            <textarea id="updateContent" cols="50" rows="5"></textarea>
+        </div>
+
+        <form action="/todo/main"
+            method="post"
+            enctype="multipart/form-data"
+            class="btn-container"
+        >
+
+          <!-- type="file" 도 결국에는 Parameter
+               -> @RequestParam으로 처리 가능
+          -->
+          <input type="file" name="uploadFile" multiple>
+          <!-- input 태그 multiple 속성 == 파일 여러 개 선택 가능 -->
+
+          <button class="myPage-submit">등록</button>
+          <a id="updateCancel">취소</a>     
+        </form>
+    </div>
 
     <script src="/js/todo/todoMain.js"></script>
     

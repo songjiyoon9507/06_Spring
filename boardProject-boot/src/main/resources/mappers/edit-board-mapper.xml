@@ -59,7 +59,7 @@
 	
 	<!-- 게시글 이미지 모두 삽입 -->
 	<insert id="insertUploadList" parameterType="list">
-		INSERT INTO BOARD_IMG
+		INSERT INTO BOARD_IMG;
 
 		<foreach collection="list" item="img"
 			open="(" close=")" separator=" UNION ">
