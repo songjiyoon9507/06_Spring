@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class ChattingServiceImpl implements ChattingService {
 
     private final ChattingMapper mapper;

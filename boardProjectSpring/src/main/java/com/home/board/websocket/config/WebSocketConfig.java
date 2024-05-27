@@ -30,6 +30,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 				"http://127.0.0.1/",
 				"http://192.168.0.53/",
 				"htt://localhost:8080/",
-				"ws://localhost:8080/chat");
+				"ws://localhost:8080/chat")
+		.withSockJS();
 	}
 }
