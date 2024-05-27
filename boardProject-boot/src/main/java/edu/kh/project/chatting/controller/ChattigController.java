@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartRequest;
 
 import edu.kh.project.chatting.model.dto.ChattingRoom;
 import edu.kh.project.chatting.model.dto.Message;
@@ -108,5 +110,5 @@ public class ChattigController {
     public int updateReadFlag(@RequestBody Map<String, Integer> paramMap) {
         return service.updateReadFlag(paramMap);
     }
- 
+    
 }

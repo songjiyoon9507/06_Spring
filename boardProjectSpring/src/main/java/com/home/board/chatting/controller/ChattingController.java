@@ -7,12 +7,14 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.multipart.MultipartRequest;
 
 import com.home.board.chatting.model.dto.ChattingRoom;
 import com.home.board.chatting.model.dto.Message;
@@ -97,4 +99,10 @@ public class ChattingController {
 	public int updateReadFlag(@RequestBody Map<String, Integer> paramMap) {
 		return service.updateReadFlag(paramMap);
 	}
+	 
+    @PostMapping("uploadImage")
+    @ResponseBody
+    public int uploadImage(@RequestBody MultipartRequest inputImage) {
+    	return service.uploadImage(inputImage);
+    }
 }

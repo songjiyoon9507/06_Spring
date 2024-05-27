@@ -3,6 +3,8 @@ package edu.kh.project.chatting.model.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartRequest;
+
 import edu.kh.project.chatting.model.dto.ChattingRoom;
 import edu.kh.project.chatting.model.dto.Message;
 import edu.kh.project.member.model.dto.Member;
@@ -50,6 +52,5 @@ public interface ChattingService {
      * @return
      */
     int insertMessage(Message msg);
-
 
 }

@@ -90,7 +90,10 @@
 		VALUES(SEQ_MESSAGE_NO.NEXTVAL, #{messageContent}, DEFAULT, DEFAULT, #{senderNo}, #{chattingNo})
 	</insert>
 	
-
+	<insert id="uploadImage">
+		INSERT INTO "MESSAGE"
+		VALUES(SEQ_MESSAGE_NO.NEXTVAL, '이미지', DEFAULT, DEFAULT, 3, 3, #{inputImage})
+	</insert>
 	
 </mapper>
 

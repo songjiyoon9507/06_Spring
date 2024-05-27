@@ -351,9 +351,10 @@ const uploadImage = (file) => {
 		const formData = new FormData();
 		formData.append("image", file);
 
-		fetch("/uploadImage", {
+		fetch("/chatting/uploadImage", {
 			method : "POST",
-			body : formData,
+			headers : {"Content-Type": "application/json"},
+			body : formData
 		})
 		.then(response => response.json())
 		.then(data => resolve(data.imageUrl))
@@ -446,6 +447,12 @@ chattingSock.onmessage = function(e) {
 			
 			li.append(span, p);
 			
+				if (message.image) {
+					var img = document.createElement("img");
+					img.src = message.image;
+					messageElement.appendChild(img);
+				}
+
 		}else{ // 상대가 작성한 메세지인 경우
 			li.classList.add("target-chat");
 	

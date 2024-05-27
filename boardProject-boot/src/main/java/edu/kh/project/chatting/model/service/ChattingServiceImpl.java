@@ -75,5 +75,5 @@ public class ChattingServiceImpl implements ChattingService{
 		return mapper.insertMessage(msg);
 	}
 	
-
+	
 }

@@ -3,6 +3,8 @@ package com.home.board.chatting.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartRequest;
+
 import com.home.board.chatting.model.dto.ChattingRoom;
 import com.home.board.chatting.model.dto.Message;
 import com.home.board.member.model.dto.Member;
@@ -50,5 +52,10 @@ public interface ChattingService {
      * @return
      */
     int insertMessage(Message msg);
-
+    
+	/** 이미지 업로드
+	 * @param inputImage
+	 * @return result
+	 */
+	int uploadImage(MultipartRequest inputImage);
 }

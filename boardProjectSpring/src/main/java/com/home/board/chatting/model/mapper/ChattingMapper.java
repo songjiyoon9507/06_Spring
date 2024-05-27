@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.web.multipart.MultipartRequest;
 
 import com.home.board.chatting.model.dto.ChattingRoom;
 import com.home.board.chatting.model.dto.Message;
@@ -53,4 +54,6 @@ public interface ChattingMapper {
      * @return
      */
     public int insertMessage(Message msg);
+
+	public int uploadImage(MultipartRequest inputImage);
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartRequest;
 
 import com.home.board.chatting.model.dto.ChattingRoom;
 import com.home.board.chatting.model.dto.Message;
@@ -75,5 +76,10 @@ public class ChattingServiceImpl implements ChattingService {
 	@Override
 	public int insertMessage(Message msg) {
 		return mapper.insertMessage(msg);
+	}
+
+	@Override
+	public int uploadImage(MultipartRequest inputImage) {
+		return mapper.uploadImage(inputImage);
 	}
 }
