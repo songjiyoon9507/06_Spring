@@ -69,5 +69,11 @@
         <a th:href="@{/chatting/list}" th:text="채팅"></a>
 
       </li>
+
+      <th:block th:if="${session.loginMember != null}">
+        <li>
+          <a href="calendar">캘린더</a>
+        </li>
+      </th:block>
     </ul>
   </nav>
