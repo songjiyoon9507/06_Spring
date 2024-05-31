@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CalendarTest</title>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/index.global.min.js"></script>
+</head>
+<body>
+    <section class="container">
+        <!-- 캘린더 제목 -->
+        <div class="title"><span>캘린더</span></div>
+
+        <!-- 버튼 영역 -->
+        <div class="calendarBtnTop">
+            <div>
+                <button class="default-btn gray-border-btn">내 일정만 보기</button>
+            </div>
+    
+            <div>
+                <button class="default-btn gray-border-btn">전체 보기</button>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- 캘린더 API -->
+    <section class="calendarSection">
+        <div class="calendarBox">
+            <div id='calendar'></div>
+        </div>
+    </section>
+
+    <!-- Full Calendar API JS -->
+    <script src="/js/calendar/calendar.js"></script>
+</body>
+</html>
