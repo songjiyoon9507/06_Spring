@@ -42,4 +42,9 @@ public class MainController {
 	public String getServiceKey() {
 		return decodeServiceKey;
 	}
+	
+	@GetMapping("calendar")
+	public String calendar() {
+		return "/calendar/calendar";
+	}
 }

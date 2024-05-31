@@ -1,5 +1,14 @@
+<<<<<<< HEAD
 document.addEventListener('DOMContentLoaded', function() {
     let draggableEl = document.getElementById('mydraggable');
+=======
+console.log("calendarTest.js 연결 확인");
+
+console.log(loginMemberNo);
+
+document.addEventListener('DOMContentLoaded', function() {
+    // let draggableEl = document.getElementById('mydraggable');
+>>>>>>> 4ab28b8215c49c73b8167e012e936e4c7e20a6cc
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
@@ -23,12 +32,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     start: info.startStr,
                     end: info.endStr
                 });
+<<<<<<< HEAD
+=======
+
+                
+
+>>>>>>> 4ab28b8215c49c73b8167e012e936e4c7e20a6cc
             }
 
         }
     });
 
     calendar.render();
+<<<<<<< HEAD
     let draggable = new Draggable(draggableEl);
 
     new Draggable(containerEl, {
@@ -36,4 +52,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     draggable.destroy();
+=======
+    // let draggable = new Draggable(draggableEl);
+    // new Draggable(containerEl, {
+    //     itemSelector: '.item-class'
+    // });
+    
+    // draggable.destroy();
+    
+>>>>>>> 4ab28b8215c49c73b8167e012e936e4c7e20a6cc
 });

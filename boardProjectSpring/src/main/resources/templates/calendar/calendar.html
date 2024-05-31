@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar Test</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/index.global.min.js"></script>
+</head>
+<body>
+    <section class="calendarSection">
+        <div class="calendarBox">
+            <div id='calendar'></div>
+        </div>
+    </section>
+
+    <script src="/js/calendar/calendar.js"></script>
+
+    <script th:inline="javascript">
+        const loginMemberNo = /*[[${session.loginMember?.memberNo}]]*/ "요청자";
+    </script>
+</body>
+</html>
