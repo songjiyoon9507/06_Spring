@@ -19,13 +19,15 @@ document.addEventListener('DOMContentLoaded', function() {
         select: function(info) {
             alert('selected' + info.startStr + ' to ' + info.endStr);
             var title = prompt('Enter event title:');
-            var requesrMember = prompt('일정에 포함된 사람을 입력해주세요.');
+            var titleColor = prompt('Enter titleColor:');
+            var requestMember = prompt('일정에 포함된 사람을 입력해주세요.');
             if (title) {
                 calendar.addEvent({
                     title: title,
                     start: info.startStr,
                     end: info.endStr,
-                    description : requesrMember
+                    description : requestMember,
+                    color: titleColor
                 });
 
             }
