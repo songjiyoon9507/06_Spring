@@ -17,9 +17,12 @@ document.addEventListener('DOMContentLoaded', function() {
         events: 'https://fullcalendar.io/api/demo-feeds/events.json',
         select: function(info) {
             alert('selected' + info.startStr + ' to ' + info.endStr);
-            var title = prompt('Enter event title:');
-            var titleColor = prompt('Enter titleColor:');
-            var requestMember = prompt('일정에 포함된 사람을 입력해주세요.');
+            var title = "";
+            title = prompt('Enter event title:');
+            var titleColor = "";
+            titleColor = prompt('Enter titleColor:');
+            var requestMember = "";
+            requestMember = prompt('일정에 포함된 사람을 입력해주세요.');
             if (title) {
                 calendar.addEvent({
                     title: title,

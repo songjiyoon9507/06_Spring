@@ -10,6 +10,8 @@
     <script src='https://fullcalendar.io/releases/fullcalendar/3.10.2/lib/moment.min.js'></script>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
     <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js'></script>
+
+    <link rel="stylesheet" href="/css/calendar/calendar.css">
 </head>
 <body>
     <section class="calendarSection">
@@ -17,6 +19,31 @@
             <div id='calendar'></div>
         </div>
     </section>
+
+    <!-- select 했을 경우 할 일 제목, 색 클릭, 요청 멤버 선택해서 받아줄 거 -->
+    <div class="calendarModal">
+        <div>
+            일정 제목 : <input>
+        </div>
+        <div class="titleColor">
+            <div style="background-color: #eb9234;"></div>
+            <div style="background-color: #accf9b;"></div>
+            <div style="background-color: #6d8ec7;"></div>
+        </div>
+        <div>
+            추가할 사람 선택
+        </div>
+        <div>
+            <!-- 선택된 사람 넣는 곳 -->
+        </div>
+        <div>
+            <input type="checkbox"> 팀 공유 여부
+        </div>
+        <div>
+            <button>저장</button>
+            <button>취소</button>
+        </div>
+    </div>
 
     <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">

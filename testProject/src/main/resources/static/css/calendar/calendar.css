@@ -1,0 +1,10 @@
+.calendarModal {
+    width: 30vw;
+    height: 50vh;
+    background-color: #f9f9f9;
+}
+
+.titleColor div {
+    height: 5vh;
+    width: 5vh;
+}
