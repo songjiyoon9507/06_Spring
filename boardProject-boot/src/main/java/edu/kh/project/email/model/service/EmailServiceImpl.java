@@ -148,7 +148,7 @@ public class EmailServiceImpl implements EmailService {
 					int sel2 = (int)(Math.random() * 2); // 0:소문자 / 1:대문자
   
 					if(sel2 == 0) {
-						ch = (char)(ch + ('a' - 'A')); // 대문자로 변경
+						ch = (char)(ch + ('a' - 'A')); // 소문자로 변경
 					}
               
 					key += ch;
