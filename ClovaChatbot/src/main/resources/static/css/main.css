@@ -1,0 +1,184 @@
+* {
+    box-sizing: border-box;
+    /* border: 1px solid black; */
+}
+
+body {
+    margin: 0;
+    background-color: #34363d;
+}
+
+header {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.title {
+    margin-bottom: 20px;
+}
+
+.title > a {
+    font-size: 80px;
+    text-decoration: none;
+    color: #90939e;
+    font-weight: bold;
+}
+
+.title-nav {
+    display: flex;
+    align-items: center;
+    width: 80%;
+}
+
+.header-nav {
+    width: 100%;
+    background-color: #34363d;
+    position: sticky;
+    top: 0;
+}
+
+.header-nav > ul {
+    flex-basis: 80%;
+    list-style: none;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 0px;
+}
+
+.header-nav a {
+    color: #90939e;
+    text-decoration: none;
+    padding: 10px;
+    font-size: 20px;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+}
+
+main section {
+    display: flex;
+    justify-content: center;
+}
+
+.home img {
+    width: 60%;
+    margin-top: 30px;
+    margin-bottom: 100px;
+    transition-duration: 0.5s;
+}
+
+.home img:hover {
+    transform: scale(1.2);
+    border-radius: 15px;
+}
+
+.aboutMe {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.aboutMe p:first-child {
+    color: #90939e;
+    font-weight: bold;
+    font-size: 40px;
+}
+
+.aboutMe p:nth-child(2),
+.aboutMe p:nth-child(3),
+.aboutMe p:nth-child(4),
+.aboutMe p:last-child {
+    color: #90939e;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.skills {
+    display: flex;
+    flex-direction: column;
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.skills p {
+    font-size: 40px;
+    font-weight: bold;
+    color: #90939e;
+}
+
+.skills li {
+    list-style: none;
+    font-size: 30px;
+    color: #90939e;
+}
+
+.skills a {
+    text-decoration: none;
+    color: #90939e;
+    font-size: 20px;
+}
+
+.portfolio {
+    margin-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.portfolio p:first-child {
+    font-size: 40px;
+    font-weight: bold;
+    color: #90939e;
+}
+
+.portfolio p:nth-child(2) {
+    font-size: 30px;
+    font-weight: bold;
+    color: #90939e;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    height: 60px;
+    bottom: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #34363d;
+}
+
+footer section {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+footer a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer p {
+    font-weight: bold;
+    font-size: 40px;
+    margin: 0;
+    padding: 35px;
+}
+
+footer a {
+    font-size: 20px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #b1bff2;
+    padding-bottom: 20px;
+}
