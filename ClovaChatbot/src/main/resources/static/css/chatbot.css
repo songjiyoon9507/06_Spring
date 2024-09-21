@@ -1,0 +1,36 @@
+/* chatbot css */
+/* 챗봇 제목 */
+#chatbotTitle {
+    display: flex;
+    justify-content: center;
+}
+
+/* 챗봇 전체 박스 */
+#chatbotBox {
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* 챗봇 채팅 내용 부분 */
+#chattingContent {
+    border: 1px solid blue;
+    width: 30vw;
+    height: 60vh;
+}
+
+/* 챗봇 채팅 입력 부분 */
+#inputArea {
+    border: 1px solid red;
+    width: 30vw;
+    display: flex;
+}
+
+#inputChatting {
+    width: 70%;
+}
+
+#send {
+    width: 30%;
+}

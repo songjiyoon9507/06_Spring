@@ -72,10 +72,10 @@ main section {
     transition-duration: 0.5s;
 }
 
-.home img:hover {
+/* .home img:hover {
     transform: scale(1.2);
     border-radius: 15px;
-}
+} */
 
 .aboutMe {
     display: flex;
@@ -130,16 +130,26 @@ main section {
     align-items: center;
 }
 
-.portfolio p:first-child {
+.portfolioTitle {
     font-size: 40px;
     font-weight: bold;
     color: #90939e;
 }
 
-.portfolio p:nth-child(2) {
-    font-size: 30px;
+.portfolio a {
+    text-decoration: none;
     font-weight: bold;
-    color: #90939e;
+    font-size: 40px;
+    margin: 0;
+    /* padding: 35px; */
+    /* color: #b1bff2; */
+}
+
+.notionTitle {
+    /* font-size: 30px;
+    font-weight: bold;
+    color: #90939e; */
+    color: #b1bff2;
 }
 
 footer {

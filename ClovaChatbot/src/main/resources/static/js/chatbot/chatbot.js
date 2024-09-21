@@ -16,6 +16,17 @@ sendBtn.addEventListener("click", e => {
         return;
     }
 
+    const ul = document.querySelector("#display-chatting");
+    // textArea에 질문을 입력했을 경우
+    const li = document.createElement("li");
+    li.classList.add("my-chat");
+    const p = document.createElement("p");
+    p.classList.add("chat");
+    p.innerText = inputChatting.value;
+
+    li.append(p);
+    ul.append(li);
+
     const requestBody = {
         version: "v2",
         userId: "48650",
@@ -51,6 +62,17 @@ sendBtn.addEventListener("click", e => {
     .then(result => {
         const description = result.bubbles[0].data.description;
         console.log("챗봇의 답변 : ", description);
+
+        // 챗봇 답변 쌓을 부분
+        const li = document.createElement("li");
+        li.classList.add("chatbotAnswer");
+        const p = document.createElement("p");
+        p.classList.add("chat");
+        p.innerText = description;
+
+        li.append(p);
+        ul.append(li);
+
         inputChatting.value = "";
     })
 
