@@ -18,6 +18,22 @@
     border: 1px solid blue;
     width: 30vw;
     height: 60vh;
+    overflow: auto;
+}
+
+#display-chatting {
+    padding: 0;
+    list-style: none;
+}
+
+/* 챗봇 답변 부분 */
+.chatbotAnswer {
+    display: flex;
+    align-items: flex-start;
+}
+
+.my-chat {
+    text-align: right;
 }
 
 /* 챗봇 채팅 입력 부분 */
