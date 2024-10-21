@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>조직도</title>
+</head>
+<body>
+    <th:block th:if="${#lists.isEmpty(organizationList)}">
+        조직도가 존재하지 않습니다.
+    </th:block>
+
+    <th:block th:unless="${#lists.isEmpty(organizationList)}">
+        <ul th:each="organization : ${organizationList}" th:object="${organization}">
+            <li th:text="*{orgName}">조직 이름</li>
+        </ul>
+    </th:block>
+</body>
+</html>
