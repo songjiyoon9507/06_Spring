@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controller 에서 th:text 속성 사용하기</title>
+</head>
+<body>
+    <h1 th:text="실제내용">thymeleaf-test</h1>
+    <!-- th:text가 타임리프 문법임을 알려줘야함 html 태그 안에 xmlns:th="http://www.thymeleaf.org" 작성 -->
+    <!-- 
+        th:text는 타임리프의 여러 속성 중 하나
+        코드상에는 저렇게 작성되지만 실제 브라우저에 최종 렌더링된 결과는 해당 테스트로 대체가 돼서 나타남.
+        h1 요소의 텍스트 값은 써줘도 되고 안 써줘도 됨
+
+        th:text 값으로 넘어온 변수 값이 없거나 또는 아무런 값이 지정되지 않으면 에러 남
+        값의 유무를 체크해서 기본값을 지정하는 것도 상황에 따라서 필요할 수 있음.
+
+        th:text 값이 있다하더라도 안에 띄어쓰기가 들어가면 에러남
+    -->
+
+    <div th:with="firstVal=${'대한민국'}">
+        <!-- firstVal 이라는 이름으로 대한민국 변수 설정 -->
+        <h1 th:text="${firstVal}">홍길동</h1>
+        <!-- 화면에는 홍길동이 아닌 대한민국이 나옴 -->
+    </div>
+
+    <div th:with="secondVal=${''}">
+        <!-- secondVal 이라는 이름으로 대한민국 변수 설정 -->
+        <h1 th:text="${secondVal}">홍길동</h1>
+        <!-- 화면에는 홍길동이 아닌 아무것도 출력되지 않음 -->
+    </div>
+
+    <div th:with="thirdVal=${''}, fourthVal=${'하나더'}">
+
+        <!-- 삼항 연산자 사용하여 출력하기 조건문 ? 참 : 거짓 -->
+        <h1 th:text="${thirdVal == '' ? '빈 값입니다.' : thirdVal}">홍길동</h1>
+
+        <!-- if문 사용 -->
+        <h1 th:if="${thirdVal == ''}" th:text="기본값"></h1>
+
+        <h1 th:if="${forthVal != ''}" th:text="${fourthVal}"></h1>
+    </div>
+</body>
+</html>
