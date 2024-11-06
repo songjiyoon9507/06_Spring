@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>파라미터 전달 : 구구단 출력하기</title>
+</head>
+<body>
+    <h3 th:utext="${num} + '단<br><br>' + ${str}"></h3>
+    <!--
+        타임리프로 변수 값 출력 시 html 태그가 포함된 내용을 출력할 때는 th:utext를 사용
+        th:text를 사용하면 태그 적용 안됨.
+        th:utext 에서 u는 unescaped text를 의미
+    -->
+
+    <h1>ModelAndView 이용</h1>
+    <br>
+    <h3 th:utext="${numMav} + '단<br><br>' + ${strMav}"></h3>
+</body>
+</html>

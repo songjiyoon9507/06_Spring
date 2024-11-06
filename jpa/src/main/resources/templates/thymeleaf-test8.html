@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RequestMethod.GET 이용</title>
+</head>
+<body>
+    <h1>Form Page</h1>
+    <br>
+    <h3 th:utext="${msg}"></h3>
+    <form action="/thymeleaf-test8" method="POST">
+        <input type="text" name="data1" th:value="${data1}">
+        <input type="submit" value="Send">
+    </form>
+</body>
+</html>

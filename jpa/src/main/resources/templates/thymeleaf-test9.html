@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>여러 개의 Form 값 전달하고 주고 받기</title>
+</head>
+<body>
+    <h1>Multi Form Page</h1>
+
+    <h3 th:utext="${msg}"></h3>
+    
+    <form action="/thymeleaf-test9" method="POST">
+        아이디 : <input type="text" name="id" th:value="${id}"><br>
+        이름   : <input type="text" name="name" th:value="${name}"><br>
+        이메일 : <input type="text" name="email" th:value="${email}"><br>
+        나이   : <input type="text" name="age" th:value="${age}"><br>
+        성별   : <input type="text" name="gender" th:value="${gender}">
+
+        <input type="submit" value="Send">
+    </form>
+</body>
+</html>

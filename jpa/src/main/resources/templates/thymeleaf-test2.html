@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>thymeleaf-test2</title>
+</head>
+<body>
+    <!-- Controller에서 templates 파일로 Model 이용해서 데이터를 전달 -->
+    <!-- 데이터 전달 방법이 Model만 있는 것은 아님 -->
+
+    <!-- 전달 받은 Model 값 출력하기 -->
+    <!-- 변수 이름 data1 -->
+    <h1 th:text="${data1}">data1 값 꺼내오기</h1>
+
+    <!-- 더하기 연산자 사용해서 문자열 붙여주기, 홑따옴표 사용 주의 -->
+    <h1 th:text="'조선시대 의적 : ' + ${data1}"></h1>
+
+    <h1 th:text="${data2}"></h1>
+</body>
+</html>
