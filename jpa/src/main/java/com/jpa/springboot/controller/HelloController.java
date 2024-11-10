@@ -206,4 +206,13 @@ public class HelloController {
 		
 		return mav;
 	}
+	
+	@RequestMapping(value="/thymeleaf-test11", method=RequestMethod.GET)
+	public ModelAndView formPageUtil(ModelAndView mav) {
+		
+		mav.addObject("msg", "Hello World");
+		mav.setViewName("thymeleaf-test11-util");
+		
+		return mav;
+	}
 }

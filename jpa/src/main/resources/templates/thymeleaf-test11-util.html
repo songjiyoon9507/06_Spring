@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>타임리프 유틸리티 메서드</title>
+</head>
+<body>
+    
+    <h1 th:text="'전달된 값 = ' + ${msg}"></h1>
+
+    <!-- 
+        #strings.equals()
+        설명 : 
+            #strings.equals() : 같은지 비교. 띄어쓰기, 대/소문자 일치.
+            th:if 사용 시 : 조건이 참이면 출력.
+            th:text 사용 시 : true / false 로 결과를 반환.
+            th : unless : Not if로 해석. 
+    -->
+    <h1 th:if="${#strings.equals(msg, 'Hello World')}" style="color: red;">
+        if 사용 시 조건이 참이면 이 문장이 보임
+    </h1>
+
+    <h1 th:text="${#strings.equals(msg, 'Hello World')}">일치하면 true 출력 불일치하면 false 출력</h1>
+
+    <!-- 
+        #strings.isEmpty()
+        설명 :
+            #strings.isEmpty() : 전달된 변수에 값이 비었는지를 체크.
+            th:text 사용 시 : true / false 로 결과를 반환. "비어있냐?" 라고 묻는 것
+            th:if / unless
+    -->
+    <h1 th:text="${#strings.isEmpty(msg)}" style="color: blue;">현재 값이 비어있지 않으므로 false 출력</h1>
+    <h1 th:if="${#strings.isEmpty(msg)}">if가 true이면 == msg가 비어있다면 이게 출력됨 false면 이 문장 출력 안됨</h1>
+    <h1 th:unless="${#strings.isEmpty(msg)}">unless는 문장이 false이면 출력됨 true면 출력 안됨 (if와 반대)</h1>
+    
+    <!-- 
+        #strings.contains()
+        설명 :
+            #strings.contains() : 전달된 변수에 특정 문자열이 포함되었는지를 체크.
+            th:text 사용 시 : true / false 로 결과를 반환. "포함되었냐?" 라고 묻는 것
+
+    -->
+    <h1 th:text="${#strings.contains(msg, 'korea')}">포함되지 않았으므로 false 출력</h1>
+    <h1 th:text="${#strings.contains(msg, 'Hello')}">포함되었으므로 true 출력</h1>
+    <h1 th:if="${#strings.contains(msg, 'Worldasdf')}">포함되지 않았으므로 false 이 문장은 출력되지 않음 (if)</h1>
+    <h1 th:unless="${#strings.contains(msg, 'Worldasdf')}">포함되지 않았으므로 true 이 문장은 출력됨 (unless)</h1>
+
+    <!-- 
+        th:if 조건과 th:block 함께 사용
+        설명 : 
+            th:block 은 태그 요소 없이 사용하고자 할 때 사용할 수 있다.
+            보통은 태그 안쪽에 타임리프 문법이 기술돼서 값을 대체하지만 th:block 은 태그에 의존하지 않고 독자적으로 사용. 렌더링 X
+    -->
+    <h1 th:text="${#strings.isEmpty(msg)}" style="color: green;">먼저 isEmpty로 변수가 비어있는지를 체크</h1>
+
+    <th:block th:if="${#strings.isEmpty(msg)} != true">
+        <h1 th:text="${#strings.contains(msg, 'Hello World')}" style="color: pink;"></h1>
+    </th:block>
+</body>
+</html>
