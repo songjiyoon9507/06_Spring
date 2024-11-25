@@ -1,5 +1,7 @@
 package com.jpa.springboot.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.jpa.springboot.dto.FormData;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class HelloController {
 
@@ -212,6 +217,44 @@ public class HelloController {
 		
 		mav.addObject("msg", "Hello World");
 		mav.setViewName("thymeleaf-test11-util");
+		
+		return mav;
+	}
+	
+	// javascript나 jquery, PHP 사용하지 않고 thymeleaf로 값을 가져올 수 있음
+	/** 체크박스 Form 값 전달하고 받기
+	 * @param mav
+	 * @return view 페이지
+	 */
+	@RequestMapping(value="/thymeleaf-test12", method=RequestMethod.GET)
+	public ModelAndView diverseFormPage(ModelAndView mav) {
+		
+		mav.addObject("msg", "아래 체크박스에서 사용하시는 메일 계정을 선택해주세요");
+		mav.setViewName("thymeleaf-test12-form");
+		return mav;
+	}
+	
+	@RequestMapping(value="/thymeleaf-test12", method=RequestMethod.POST)
+	public ModelAndView diverseFormSend(ModelAndView mav,
+			@RequestParam(value = "email", required=false) List<String> emailItem) {
+		
+		List<String> emailList = emailItem;
+		
+		log.info("emailList=={}", emailList);
+		
+		mav.addObject("msg", "아래 체크박스에서 사용하시는 메일 계정을 선택해주세요");
+		mav.addObject("emailList", emailList);
+		mav.setViewName("thymeleaf-test12-form");
+		
+		return mav;
+	}
+	
+	// 여러 개의 Form 값 전달하고 받기
+	@RequestMapping(value="/thymeleaf-test13", method=RequestMethod.GET)
+	public ModelAndView diverseMultiFormPage(ModelAndView mav) {
+		
+		mav.addObject("msg", "아래 다양한 Form 값을 선택해주세요");
+		mav.setViewName("thymeleaf-test13-multiform");
 		
 		return mav;
 	}

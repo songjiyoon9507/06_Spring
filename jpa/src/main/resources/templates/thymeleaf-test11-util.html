@@ -57,5 +57,31 @@
     <th:block th:if="${#strings.isEmpty(msg)} != true">
         <h1 th:text="${#strings.contains(msg, 'Hello World')}" style="color: pink;"></h1>
     </th:block>
+
+    <!-- 
+        th:if / unless + th:block
+        설명 : 
+            보통의 프로그래밍 언어에서 조건문으로 사용하는 if ~ else 구문의 else에 해당하는 타임리프 구문
+            Not if 로 해석
+            unless 사전적인 뜻 : ~하지 않는 한, ~이 아닌 한, ~한 경우 외에는 (너만 아니면 돼)
+    -->
+
+    <h1 th:if="${#strings.isEmpty(msg)}">비어있다면 if문이 출력됨</h1>
+    
+    <!-- unless는 Not if 이므로 msg에 값이 있다면 이 문장이 보임-->
+    <h1 th:unless="${#strings.isEmpty(msg)}">비어있지 않다면 unless가 출력됨</h1>
+
+    <!-- th:with 사용해보기 -->
+    <!-- Controller에서 보낸 msg 값을 없애면 true가 출력됨 -->
+    <th:block th:with="msgValue = ${#strings.isEmpty(msg)}">
+        <h1 th:text="'msgValue의 값은 = ' + ${msgValue}"></h1>
+
+        <!-- th:if="조건1 and 조건2" -->
+        <!-- #strings 유틸리티 함수 -->
+        <th:block th:if="${!msgValue and (#strings.contains(msg, 'Hello World'))}">
+            <button>BUTTON</button>
+        </th:block>
+
+    </th:block>
 </body>
 </html>

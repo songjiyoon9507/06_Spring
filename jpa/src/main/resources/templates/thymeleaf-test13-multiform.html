@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>여러 개의 Form 값 전달하고 받기</title>
+</head>
+<body>
+    <h1>Diverse Form Page</h1>
+
+    <h3 th:text="${msg}"></h3>
+
+    <!-- 비어있으면 true 반환 -->
+    <h3 th:text="'emailList 비었나요? ' + ${#strings.isEmpty(emailList)}" style="color: red;">
+        먼저 isEmpty로 변수가 비어있는지 체크
+    </h3>
+
+    <!-- Form -->
+    <form>
+        <!-- GET -->
+
+        <!-- POST -->
+
+        
+    </form>
+</body>
+</html>

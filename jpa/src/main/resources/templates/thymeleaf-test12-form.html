@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>체크박스 Form 값 전달하고 받기</title>
+</head>
+<body>
+    
+    <h1>Checkbox Form Page</h1>
+
+    <h3 th:text="${msg}"></h3>
+
+    <!-- Form -->
+    <!-- 
+        설명 : 
+            체크박스 처리를 위해 자바스크립트(제이쿼리)를 이용해도 되고, 타임리프를 이용하는 것도 가능
+            (PHP 문법만으로도 체크박스 처리 가능함)
+            배열로 서버에 전달됨
+            아무튼 배열로 처리, HTML5 에서는 기본적으로 체크박스 Form name 값이 같으면 자동으로 배열로 전송.
+            체크 여부는 checked 속성으로 판단. 이 속성이 있으면 체크
+            checked="false" 라고 되어있어도 체크가 되어짐
+            checked 라고만 써놔도 체크됨
+            checked 뒤에 아무 의미 없는 글을 써도 체크 되어짐
+            그냥 checked 속성만 적어줘도 체크, 재미난 건 checked="asdf" 의미없는 값도 적어주면 체크
+            예) <input type="checkbox" name="email" value="test" checked="false"> 테스트
+            -> 체크 되어짐 checked라는 말만 있으면 체크됨
+
+            따라서, 체크를 안하고 싶다면 checked 속성 자체를 없애야 함
+            타임리프에서는 좀 더 편리하게 true, false 값을 사용해서 처리할 수 있도록 함
+            th:checked 값이 true면 체크 false이면 checked 속성 자체를 제거
+
+            value 값 지정이 없으면 on으로 전달됨
+            체크박스가 하나라면 타입을 boolean으로 해서 선택상태를 참/거짓으로 전달해서 처리
+            라디오 버튼, select form들은 선택된 항목의 값을 String 값으로 전달.
+
+            - 체크박스를 하나도 체크하지 않았을 때 처리
+            1. form 페이지에서 javascript나 jquery로 한 개 이상 체크하도록 구현
+            2. 컨트롤러에서 처리 (사용하는 메일이 없을 수 있음)
+    -->
+    <form action="/thymeleaf-test12" method="POST" style="line-height: 2;">
+        <!-- <input type="checkbox" name="email" value="test" th:checked="true"> 테스트 -->
+        <!-- checked 속성 자체를 적지 않아야 체크가 안 돼있음 -->
+        사용하는 메일은?
+        <br>
+        <!-- <input type="checkbox" name="email" value="gmail" th:checked="false"> 지메일 -->
+        <th:block th:if="${#strings.isEmpty(emailList) != true}">
+            <input type="checkbox" name="email" value="gmail" th:checked="${#strings.contains(emailList, 'gmail')}"> 지메일
+            <input type="checkbox" name="email" value="kakao" th:checked="${#strings.contains(emailList, 'kakao')}"> 카카오메일
+            <input type="checkbox" name="email" value="hotmail" th:checked="${#strings.contains(emailList, 'hotmail')}"> 핫메일
+            <input type="checkbox" name="email" value="naver" th:checked="${#strings.contains(emailList, 'naver')}"> 네이버
+        </th:block>
+
+        <!-- if문 else에 해당하는 곳 아무것도 체크 안 돼있을 경우 emailList가 비어있음-->
+        <th:block th:unless="${#strings.isEmpty(emailList) != true}">
+            <input type="checkbox" name="email" value="gmail" th:checked="false"> 지메일
+            <input type="checkbox" name="email" value="kakao" th:checked="false"> 카카오메일
+            <input type="checkbox" name="email" value="hotmail" th:checked="false"> 핫메일
+            <input type="checkbox" name="email" value="naver" th:checked="false"> 네이버
+        </th:block>
+
+        <!-- emailList에 담겨져서 값이 전달되어지는데 emailList가 비어있는지 확인한 후
+            비어있지 않으면 emailList에서 gmail이 있는지 찾아보고 있다면 checked를 true로 바꿔줄 거 -->
+
+        <!-- 이렇게 한줄 한줄 다 해줄 수도 있음 -->
+        <!-- <input type="checkbox" name="email" value="kakao" th:if="${#strings.isEmpty(emailList)} != true" th:checked="${#strings.contains(emailList, 'gmail')}"> 카카오메일 -->
+        <!-- <input type="checkbox" name="email" value="kakao" th:unless="${#strings.isEmpty(emailList)} != true" th:checked="false"> 카카오메일 -->
+
+
+        <br>
+        <input type="submit" value="send">
+    </form>
+
+    <th:block th:if="${#strings.isEmpty(emailList)}">
+        <h3>선택된 이메일 없음</h3>
+    </th:block>
+    <th:block th:unless="${#strings.isEmpty(emailList)}">
+        <h3 th:text="${emailList}"></h3>
+    </th:block>
+
+    <!-- 서버에서 돌려받은 리스트 출력하기 -->
+    <!-- th:each로 반복 -->
+    <table border="1" cellpadding="10">
+        <tr th:each="emailItem, idx : ${emailList}">
+            <!-- 인덱스 번호 -->
+            <!-- idx.index 라고 하면 0부터 나옴 -->
+            <!-- idx.count 라고 하면 1부터 count가 나옴 -->
+            <!-- idx.size 라고 하면 배열의 총 size가 출력됨 (체크된 개수) -->
+            <!-- <td th:text="${idx.count}"></td> -->
+            <td th:text="${idx.index + 1}"></td>
+            <!-- kakao, hotmail 등 value가 나오게 -->
+            <td th:text="${emailItem}"></td>
+        </tr>
+    </table>
+
+</body>
+</html>
