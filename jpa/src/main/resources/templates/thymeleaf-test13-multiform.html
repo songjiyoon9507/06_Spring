@@ -16,11 +16,94 @@
     </h3>
 
     <!-- Form -->
-    <form>
-        <!-- GET -->
+    <form action="/thymeleaf-test13" method="POST">
+        <!-- GET 방식 요청 시 보여줄 부분-->
+        <th:block th:if="${#strings.isEmpty(checkItems)}">
+            <table border="0" cellpadding="10">
+                <tr>
+                    <td style="background-color: #ddd; width: 100px;">이메일</td>
+                    <td><input type="checkbox" name="email" value="gmail" th:checked="false">gmail</td>
+                    <td><input type="checkbox" name="email" value="kakao" th:checked="false">kakao</td>
+                    <td><input type="checkbox" name="email" value="hotmail" th:checked="false">hotmail</td>
+                    <td><input type="checkbox" name="email" value="naver" th:checked="false">naver</td>
+                </tr>
+                <!-- 라디오 -->
+                <tr>
+                    <td style="background-color: #ddd; width: 100px;">성별</td>
+                    <td><input type="radio" name="gender" value="male">Male</td>
+                    <td><input type="radio" name="gender" value="female">Female</td>
+                </tr>
+                <!-- select -->
+                <tr>
+                    <td style="background-color: #ddd; width: 100px;">연령대</td>
+                    <td>
+                        <select name="age">
+                            <!-- size="3" 으로 설정하면 3개가 먼저 보여짐 -->
+                            <option value="0">10이하</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="40">40</option>
+                            <!-- selected 설정하면 기본 값이 됨 -->
+                            <option value="50">50</option>
+                            <option value="60">60이상</option>
+                        </select>
+                    </td>
+                </tr>
+                <!-- checkbox 한개 -->
+                <tr>
+                    <td style="background-color: #ddd; width: 100px;">메일 수신 여부</td>
+                    <td><input type="checkbox" name="mconsent" value="on" th:check="false">동의함</td>
+                    <!-- value 값 사용하지 않아도 value 값은 on으로 들어옴 -->
+                </tr>
+            </table>
+            <input type="submit" value="Send">
+        </th:block>
 
         <!-- POST -->
-
+        <!-- Controller에서 보낸 값들을 보여줄 부분 -->
+        <th:block th:unless="${#strings.isEmpty(checkItems)}">
+            <table border="0" cellpadding="10">
+                <tr>
+                    <td style="background-color: #ddd; width: 100px;">이메일</td>
+                    <td th:each="checkItem : ${checkItems}"
+                        th:with="isEmail = ${emailList != null}">
+                        <!-- 하나라도 선택돼서 emailList가 null이 아니면 isEmail이 true가 됨 -->
+                        <input type="checkbox" name="email" th:value="${checkItem}" 
+                        th:checked="${isEmail and (#strings.contains(emailList, checkItem))}">
+                        <th:block th:text="${checkItem}"></th:block>
+                    </td>
+                </tr>
+                <!-- 라디오 -->
+                <tr>
+                    <td style="background-color: #ddd; width: 100px;">성별</td>
+                    <td><input type="radio" name="gender" value="male" th:checked="${gender} == 'male'">Male</td>
+                    <td><input type="radio" name="gender" value="female" th:checked="${gender} == 'female'">Female</td>
+                </tr>
+                <!-- select -->
+                <tr>
+                    <td style="background-color: #ddd; width: 100px;">연령대</td>
+                    <td>
+                        <select name="age">
+                            <option value="0" th:selected="${age == '0'}">10이하</option>
+                            <option value="10" th:selected="${age == '10'}">10</option>
+                            <option value="20" th:selected="${age == '20'}">20</option>
+                            <option value="30" th:selected="${age == '30'}">30</option>
+                            <option value="40" th:selected="${age == '40'}">40</option>
+                            <option value="50" th:selected="${age == '50'}">50</option>
+                            <option value="60" th:selected="${age == '60'}">60이상</option>
+                        </select>
+                    </td>
+                </tr>
+                <!-- checkbox 1개 -->
+                <tr>
+                    <td style="background-color: #ddd; width: 100px;">메일 수신 여부</td>
+                    <td><input type="checkbox" name="mconsent" value="on" th:checked="${mconsent == 'on'}">동의함</td>
+                    <!-- value 값 사용하지 않아도 value 값은 on으로 들어옴 -->
+                </tr>
+            </table>
+            <input type="submit" value="Send">
+        </th:block>
         
     </form>
 </body>

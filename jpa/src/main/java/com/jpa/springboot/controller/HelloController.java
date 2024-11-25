@@ -1,5 +1,6 @@
 package com.jpa.springboot.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -254,6 +255,38 @@ public class HelloController {
 	public ModelAndView diverseMultiFormPage(ModelAndView mav) {
 		
 		mav.addObject("msg", "아래 다양한 Form 값을 선택해주세요");
+		mav.setViewName("thymeleaf-test13-multiform");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/thymeleaf-test13", method=RequestMethod.POST)
+	public ModelAndView diverseMultiFormSend(ModelAndView mav,
+			@RequestParam(value="email", required=false) List<String> emailItem,
+			@RequestParam(value="gender", required=false) String gender,
+			@RequestParam(value="age", required=false) String age,
+			@RequestParam(value="mconsent", required=false) String mconsent) {
+		
+		// 1. 사용자가 선택한 체크박스 항목을 담아줌
+		List<String> emailList = emailItem;			
+
+		log.info("emailList=={}", emailList);
+		
+		// 2. 뷰페이지단에서 체크박스 항목들을 자동으로 생성 시켜주기 위한 용도
+		List<String> checkItems = new ArrayList<>();
+		checkItems.add("gmail");
+		checkItems.add("kakao");
+		checkItems.add("hotmail");
+		checkItems.add("naver");
+		
+		// 전달
+		mav.addObject("msg", "아래 다양한 폼값을 선택해주세요");
+		mav.addObject("emailList", emailList);
+		mav.addObject("checkItems", checkItems);
+		mav.addObject("gender", gender);
+		mav.addObject("age", age);
+		mav.addObject("mconsent", mconsent);
+		
 		mav.setViewName("thymeleaf-test13-multiform");
 		
 		return mav;
