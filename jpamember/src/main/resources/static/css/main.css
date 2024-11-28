@@ -1,0 +1,43 @@
+* {
+    margin: 0;
+}
+
+main {
+    /* border: 1px solid black; */
+    /* 화면 전체 사용하기 */
+    /* vertical width, vertical height */
+    /* 반응형 웹 구현시 많이 사용함 */
+    /*
+    폰트 사이즈 또한 루트 폰트 크기를 기준으로
+    적용될 수 있도록 rem, em 등을 많이 사용
+    */
+    width: 100vw;
+    height: 100vh;
+    background-color: #ebebeb;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+button {
+    background-color: rgb(200, 227, 255);
+    color: white;
+    border: none;
+    border-radius: 100px;
+    font-size: 1em;
+    cursor: pointer;
+    width: 300px;
+    height: 70px;
+    padding: 20px 40px;
+    margin-bottom: 10px;
+}
+
+/* 아래 두개 버튼 background 색깔 바꾸기 */
+button:nth-child(3) {
+    background-color: rgb(255, 210, 218);
+}
+
+button:nth-child(4) {
+    background-color: rgb(255, 210, 218);
+}

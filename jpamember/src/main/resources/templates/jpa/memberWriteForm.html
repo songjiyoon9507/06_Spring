@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>member Write Form</title>
+
+        <link rel="stylesheet" href="/css/memberWriteForm.css">
+    </head>
+    <body>
+        <h1>
+            Member Registration Form
+        </h1>
+
+        <!-- 신규 등록 -->
+        <form action="/jpa/memberWriteForm" method="POST" id="memberWriteForm">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name">
+            <br>
+
+            <label for="id">ID</label>
+            <input type="text" id="id" name="id">
+            <br>
+
+            <label for="phone">Phone</label>
+            <input type="text" id="phone" name="phone">
+            <br>
+
+        </form>
+
+        <!-- button 이 form 태그 바깥에 있을 때 form 태그 id 를 form=""에 넣어줘야함 -->
+        <button type="submit" form="memberWriteForm">회원등록</button>
+        
+    </body>
+</html>
